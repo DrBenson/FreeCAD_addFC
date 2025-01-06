@@ -1,6 +1,6 @@
 # addFC - additional tools for FreeCAD
 
-Current version 1.0.7 beta - [release notes](CHANGELOG.md).
+Current version 1.0.5 beta - [release notes](CHANGELOG.md).
 
 
 ### Overview
@@ -56,18 +56,14 @@ Explosion (30 FPS)
 
 ### Documentation
 
-[Quick reference guide](/repo/doc/quickstart_EN.md)
-
 [Documentation](repo/doc) available in PDF format:
 
 * [English](https://digiroad.tech/share/addFC/documentation_EN.pdf)
 * [Russian](https://digiroad.tech/share/addFC/documentation_RU.pdf)
 
+[FreeCAD forum thread](https://forum.freecad.org/viewtopic.php?t=91329)
 
-Forum:
-
-* [FreeCAD forum thread](https://forum.freecad.org/viewtopic.php?t=91329)
-* [FreeCAD тема на русском языке](https://forum.freecad.org/viewtopic.php?t=91598)
+[FreeCAD тема на русском языке](https://forum.freecad.org/viewtopic.php?t=91598)
 
 
 ### Notes
@@ -119,7 +115,7 @@ Requirements:
 
 For full functionality, you need:
 
-* [FreeCAD SheetMetal Workbench](https://github.com/shaise/FreeCAD_SheetMetal) >= 0.6.13
+* [FreeCAD SheetMetal Workbench](https://github.com/shaise/FreeCAD_SheetMetal)
 * Additional Python Modules: [numpy](https://pypi.org/project/numpy) and [ezdxf](https://pypi.org/project/ezdxf)
 * [FFmpeg](https://ffmpeg.org)
 

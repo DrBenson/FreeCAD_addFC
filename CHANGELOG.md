@@ -71,7 +71,7 @@
 #### 2024.10.28 (**0.7.5**):
 * Fixes: unfold and BOM.
 
-#### 2025.01.04 (**1.0.6**):
+#### 2024.12.31 (**1.0.5**):
 * The name for the property group is now standard and unchangeable: __Add__.
 * The properties __Weight__ and __Price__ have been moved to the basic group.
 * Added basic property __Node__ to separate bill of materials.
@@ -83,6 +83,3 @@
 * __SheetMetal Workbench__ has been removed from required dependencies.
 * Many other changes, fixes and improvements.
 * Backward compatibility may be broken...
-
-#### 2025.01.05 (**1.0.7**):
-* Fixes and updates to batch processing of sheet metal parts.
