@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Golodnikov Sergey
+# Copyright 2024 Golodnikov Sergey
 
 
 import FreeCAD

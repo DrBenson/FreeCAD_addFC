@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Golodnikov Sergey
+# Copyright 2024 Golodnikov Sergey
 
 
 import os
@@ -25,28 +25,28 @@ configuration = {
     # sheet metal part:
     'smp_color': tuple(int('b4c0c8'[i:i + 2], 16) for i in (0, 2, 4)),
     # USDD:
-    'ru_std_tpl_drawing': 'RU_Portrait_A4.svg',
-    'ru_std_tpl_text': 'RU_Portrait_A4_T_1.svg',
+    'ru_std_tpl_drawing': 'A4_Landscape_Ender.svg',
+    'ru_std_tpl_text': 'A4_Landscape_Ender.svg',
     'ru_std_tpl_stamp': {
-        'Designation': 'XXXX.XXXXXX.XXX',
-        'Author': 'Иванов И. И.',
-        'Inspector': '',
-        'Control 1': '',
-        'Control 2': '',
-        'Approver': '',
-        'Material 1': '',
-        'Material 2': '',
-        'Company 1': '',
-        'Company 2': 'Организация',
-        'Company 3': '',
-        'Title 1': '',
-        'Title 2': 'Изделие',
-        'Title 3': '',
-        'Weight': '',
-        'Scale': '1:1',
-        'Letter 1': '',
-        'Letter 2': '',
-        'Letter 3': '',
+        "Designation": "XXXX.XXXXXX.XXX",
+        "Author": "DrBenson",
+        "Inspector": "",
+        "Control 1": "",
+        "Control 2": "",
+        "Approver": "",
+        "Material 1": "",
+        "Material 2": "",
+        "Company 1": "Benson's Network Technology Company.",
+        "Company 2": "",
+        "Company 3": "",
+        "Title 1": "",
+        "Title 2": "",
+        "Title 3": "",
+        "Weight": "",
+        "Scale": "1:1",
+        "Letter 1": "",
+        "Letter 2": "",
+        "Letter 3": "",
     },
     # library:
     'library': {
@@ -84,7 +84,7 @@ explosion = {
 materials = {
     '-': None,
     # standard:
-    'Galvanized': ['Sheet metal', 7870, 'm^2', 0],
+    'Galvanized': ['Sheet metal', 7874, 'm^2', 0],
     'Stainless': ['Sheet metal', 7900, 'm^2', 0],
     # general:
     'Aluminum': ['General', 2700, 'kg', 0],
@@ -96,7 +96,7 @@ materials = {
     'Glass': ['General', 2530, 'kg', 0],
     'Mineral wool': ['General', 100, 'm^2', 0],
     'Rubber': ['General', 1000, 'kg', 0],
-    'Steel': ['General', 7800, 'kg', 0],
+    'Steel': ['General', 7874, 'kg', 0],
     # aisi:
     'AISI 201': ['Sheet metal', 7860, 'm^2', 0],
     'AISI 304': ['Sheet metal', 7950, 'm^2', 0],
@@ -153,14 +153,14 @@ properties_add = {
     # разделы спецификации ЕСКД:
     'Section': ['Enumeration', False, [
         '-',
-        'Документация',
-        'Комплексы',
-        'Сборочные единицы',
-        'Детали',
-        'Стандартные изделия',
-        'Прочие изделия',
-        'Материалы',
-        'Комплекты',
+        'File',
+        'Complex',
+        'Assembly units',
+        'Details',
+        'Standard products',
+        'Other products',
+        'Materials',
+        'Kits',
     ], ''],
 }
 

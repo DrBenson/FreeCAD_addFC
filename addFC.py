@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Golodnikov Sergey
+# Copyright 2024 Golodnikov Sergey
 
 
 from PySide import QtGui, QtCore
@@ -64,8 +64,8 @@ class AddFCOpenRecentFile():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'resent.svg'),
                 'Accel': 'R',
-                'MenuText': 'Recent File',
-                'ToolTip': 'Open recent file'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Recent File'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Open recent file')}
 
     def Activated(self):
         ld = tuple(FreeCAD.listDocuments().keys())
@@ -82,7 +82,7 @@ class AddFCOpenRecentFile():
                 FreeCAD.Gui.SendMsgToActiveView('ViewFit')
                 return
 
-        FreeCAD.Gui.runCommand('Std_Open')
+        Logger.error('The file cannot be opened...')
 
     def IsActive(self): return True
 
@@ -98,8 +98,8 @@ class AddFCDisplay():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'display.svg'),
                 'Accel': 'D',
-                'MenuText': 'Display',
-                'ToolTip': 'Isometry and fit all'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Display'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Isometry and fit all')}
 
     def Activated(self):
         try:
@@ -123,8 +123,8 @@ class AddFCModelControl():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'control.svg'),
                 'Accel': 'C',
-                'MenuText': 'Model Control',
-                'ToolTip': 'Run the model control file'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Model Control'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Run the model control file')}
 
     def Activated(self):
         file = str(FreeCAD.ActiveDocument.getFileName())
@@ -150,8 +150,8 @@ class AddFCModelInfo():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'info.svg'),
                 'Accel': 'I',
-                'MenuText': 'Model Information',
-                'ToolTip': 'Model information (BOM)'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Model Information'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Model information (BOM)')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -401,7 +401,7 @@ class AddFCModelInfo():
                 node_name=get_node_name(),
             )
             structure_update()
-            w.info.setText('Updated')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Updated'))
 
         def structure_purge() -> None:
             table.setSortingEnabled(False)
@@ -417,7 +417,7 @@ class AddFCModelInfo():
 
         def structure_purge_wrapper() -> None:
             structure_purge()
-            w.info.setText('Cleared')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Cleared'))
 
         structure_update()
         w.info.setText('...')
@@ -528,7 +528,7 @@ class AddFCModelInfo():
                 indexing=True,
             )
             structure_update()
-            w.info.setText('Elements are indexed')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Elements are indexed'))
         w.pushButtonIndexing.clicked.connect(indexing)
 
         def update_enumerations() -> None:
@@ -539,7 +539,7 @@ class AddFCModelInfo():
                 update_enumerations=True,
             )
             structure_update()
-            w.info.setText('Enumerations updated')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Enumerations updated'))
         w.pushButtonUEnum.clicked.connect(update_enumerations)
 
         def update_equations() -> None:
@@ -550,7 +550,7 @@ class AddFCModelInfo():
                 update_equations=True,
             )
             structure_update()
-            w.info.setText('Equations updated')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Equations updated'))
         w.pushButtonUEq.clicked.connect(update_equations)
 
         def spec_export_settings() -> None:
@@ -779,8 +779,8 @@ class AddFCProperties():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'properties.svg'),
                 'Accel': 'A',
-                'MenuText': 'Add Properties',
-                'ToolTip': 'Add properties to an object'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Add Properties'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Add properties to an object')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -918,21 +918,34 @@ class AddFCProperties():
 
         def add() -> None:
             if len(FreeCAD.Gui.Selection.getSelection()) < 1:
-                w.info.setText('You need to select an object')
+                w.info.setText(FreeCAD.Qt.translate("addFC", 'You need to select an object'))
                 return
             w.info.setText('')
 
             smp = w.checkBoxSMP.isChecked()
 
-            selection = FreeCAD.Gui.Selection.getSelectionEx('')
-            if len(selection) == 0:
-                return
-            for s in selection:
-                if s.HasSubObjects:
-                    i = s.Object.InList[0]
-                else:
-                    i = s.Object
+            selection, choice = FreeCAD.Gui.Selection.getSelection(), []
 
+            for i in selection:
+                choice.clear()
+                for j in i.InList:
+                    if j.TypeId != 'App::Link':
+                        choice.append(j)
+                if FreeCAD.ActiveDocument.Name != i.Document.Name:
+                    if len(choice) > 1:
+                        i = choice[0]
+                else:
+                    try:
+                        if i.BaseFeature is not None:
+                            i = choice[0]
+                        else:
+                            match i.TypeId:
+                                case 'PartDesign::Body' | 'App::Link':
+                                    pass
+                                case _:
+                                    i = choice[0]
+                    except BaseException:
+                        pass
                 if i.TypeId == 'App::Link':
                     i = i.LinkedObject
                 if smp:
@@ -1136,7 +1149,7 @@ class AddFCProperties():
                 w.checkBoxLT.setEnabled(False)
                 cb_materials.setEnabled(True)
                 return
-            w.comboBoxSMP.setCurrentText('Galvanized')
+            w.comboBoxSMP.setCurrentText(FreeCAD.Qt.translate("addFC", 'Galvanized'))
             w.comboBoxSMP.setEnabled(True)
             w.checkBoxLT.setEnabled(True)
             w.checkBoxLT.setChecked(True)
@@ -1198,8 +1211,8 @@ class AddFCInsert():
 
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'insert.svg'),
-                'MenuText': 'Creating a Drawing',
-                'ToolTip': 'Create a drawing based on a template'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Creating a Drawing'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Create a drawing based on a template')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -1219,8 +1232,8 @@ class AddFCInsert():
         for i in tpl.keys():
             model.appendRow(QtGui.QStandardItem(i.rstrip('.svg')))
 
-        w.label.setText('Select a template to create a drawing.')
-        w.pushButton.setText('Create')
+        w.label.setText(FreeCAD.Qt.translate("addFC", 'Select a template to create a drawing.'))
+        w.pushButton.setText(FreeCAD.Qt.translate("addFC", 'Create'))
         w.show()
 
         def create() -> None:
@@ -1304,8 +1317,8 @@ class AddFCAssistant():
 
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'help.svg'),
-                'MenuText': 'Help and Example',
-                'ToolTip': 'Help and Example'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Help and Example'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Help and Example')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -1316,7 +1329,7 @@ class AddFCAssistant():
         for i in examples:
             model.appendRow(QtGui.QStandardItem(i))
 
-        w.pushButton.setText('Open')
+        w.pushButton.setText(FreeCAD.Qt.translate("addFC", 'Open'))
         w.show()
 
         def unzip(reset: bool) -> None:
@@ -1369,8 +1382,8 @@ class AddFCLibrary():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'library.svg'),
                 'Accel': 'L',
-                'MenuText': 'Library',
-                'ToolTip': 'Component library'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Library'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Component library')}
 
     def Activated(self):
         file = os.path.join(P.AFC_PATH, 'utils', 'addFC_Library.py')
@@ -1392,8 +1405,8 @@ class AddFCExplode():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'explode.svg'),
                 'Accel': 'E',
-                'MenuText': 'Explode',
-                'ToolTip': 'Exploded view'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Explode'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Exploded view')}
 
     def Activated(self):
         file = os.path.join(P.AFC_PATH, 'utils', 'addFC_Explode.py')
@@ -1415,8 +1428,8 @@ class AddFCPipe():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'pipe.svg'),
                 'Accel': 'P',
-                'MenuText': 'Pipe',
-                'ToolTip': 'Creating a pipe by points'}
+                'MenuText': FreeCAD.Qt.translate("addFC", 'Pipe'),
+                'ToolTip': FreeCAD.Qt.translate("addFC", 'Creating a pipe by points')}
 
     def Activated(self):
         file = os.path.join(P.AFC_PATH, 'utils', 'addFC_Pipe.py')

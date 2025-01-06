@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Golodnikov Sergey
+# Copyright 2024 Golodnikov Sergey
 
 
 import addFC_Logger as Logger
@@ -88,6 +88,11 @@ def price_equation(obj, material: list) -> None:
     match material[2]:
         case '-':
             return
+        case 'mm':
+            u = 'Add_Unit'
+            if u in obj.PropertiesList:
+                if obj.getPropertyByName(u) == 'mm':
+                    obj.setExpression(p, f'{u} * {price}')
         case 'm':
             u = 'Add_Unit'
             if u in obj.PropertiesList:
@@ -132,7 +137,7 @@ def compilation(strict: bool = True,
                 ) -> tuple[dict, dict, dict, dict, dict]:
 
     index_pt = 'App::PropertyString'  # important, type: string
-    index_exception = ('Add_Section', 'Документация')
+    index_exception = ('Add_Section', FreeCAD.Qt.translate("addFC",'Документация'))
 
     group = 'Add_'
 
@@ -472,6 +477,7 @@ def compilation(strict: bool = True,
 
 UNIT_RU = {
     '-': '',
+    'mm': 'мм.',
     'm': 'м.',
     'kg': 'кг.',
     'm^2': 'м^2',
@@ -501,9 +507,9 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
         if merger == 'Section':  # USDD
             if 'Section' in unit:
                 if unit['Section'] == '-':
-                    unit['Section'] = 'Прочие изделия'
+                    unit['Section'] = FreeCAD.Qt.translate("addFC",'Прочие изделия')
             else:
-                unit['Section'] = 'Прочие изделия'
+                unit['Section'] = FreeCAD.Qt.translate("addFC",'Прочие изделия')
 
         for j in skip:
             if j in unit:
@@ -536,7 +542,7 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
 def export(path: str, target: str, bom) -> str:
 
     if len(bom[0]) == 0:
-        return 'The BOM is empty...'
+        return FreeCAD.Qt.translate("addFC", 'The BOM is empty...')
 
     conf, properties = P.pref_configuration, P.pref_properties
 
@@ -678,9 +684,9 @@ def export(path: str, target: str, bom) -> str:
                     if 'Section' in j:
                         section = j['Section']
                         if section == '-':
-                            section = 'Прочие изделия'
+                            section = FreeCAD.Qt.translate("addFC",'Прочие изделия')
                     else:
-                        section = 'Прочие изделия'
+                        section = FreeCAD.Qt.translate("addFC",'Прочие изделия')
 
                     for k in j:
                         if k in r:
@@ -739,7 +745,7 @@ def export(path: str, target: str, bom) -> str:
 
                 # do you need more pages?
                 if count > limit[0] + limit[1] * 2:
-                    e = 'The allowed number of elements has been exceeded!'
+                    e = FreeCAD.Qt.translate("addFC", 'The allowed number of elements has been exceeded!')
                     Logger.error(e)
 
                 if count > limit[0] + limit[1]:
@@ -906,4 +912,4 @@ def export(path: str, target: str, bom) -> str:
 
             ad.recompute()
 
-    return 'Export complete'
+    return FreeCAD.Qt.translate("addFC", 'Export complete')
