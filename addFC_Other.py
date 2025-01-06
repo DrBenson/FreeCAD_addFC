@@ -21,7 +21,8 @@ def recompute_configuration_tables() -> None:
                 s = e[0][len('.cells.Bind.'):].split('.')[0]
                 d = re.search(DIGIT, s).group(0)
                 c = ALPHABET[ALPHABET.index(s.replace(d, '')) - 1] + d
-                obj.recomputeCells(c)
+            obj.recomputeCells(c)
+    FreeCAD.ActiveDocument.recompute()
 
 
 def error(message: str, header: str = 'ERROR') -> None:
