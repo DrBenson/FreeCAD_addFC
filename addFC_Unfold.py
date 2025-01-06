@@ -188,17 +188,8 @@ def unfold(w, details: dict, path: str, skip: list = []) -> None:
 
         # correctness check:
         if ad.getObject(VERIFICATION_SKETCH) is None:
-<<<<<<< HEAD
-            Logger.warning("wrong, let's try a spare face...")
-            cleaning(REPRODUCTION)
-=======
             Logger.warning(FreeCAD.Qt.translate("addFC", "wrong, let's try a spare face..."))
-            for i in GARBAGE:
-                try:
-                    ad.removeObject(i)
-                except BaseException:
-                    pass
->>>>>>> cdc4ad1 (Modify: Add translator for other language.)
+            cleaning(REPRODUCTION)
             # switching to spare:
             face = 'Face' + str(target[2])
             FreeCAD.Gui.Selection.addSelection(
@@ -308,19 +299,8 @@ def unfold(w, details: dict, path: str, skip: list = []) -> None:
                 f = os.path.join(target, f'{file} ({i + 1}).step')
                 ImportGui.export([body], f)
 
-<<<<<<< HEAD
         cleaning('')
-        Logger.log('...done')
-=======
-        # clearing:
-        for i in GARBAGE:
-            try:
-                ad.removeObject(i)
-            except BaseException:
-                pass
-
         Logger.log(FreeCAD.Qt.translate("addFC", '...done'))
->>>>>>> cdc4ad1 (Modify: Add translator for other language.)
 
         progress_value += progress_step
         w.progress.setValue(progress_value)
