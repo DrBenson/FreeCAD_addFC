@@ -700,6 +700,10 @@
        y="234.79391">Индекс заказчика</tspan></text>
   <path
      style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 20.000006,19 H 90.00001"
+     id="path9-9" />
+  <path
+     style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 20,26.000009 H 90"
      id="path29" />
   <text
