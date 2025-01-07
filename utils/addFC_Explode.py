@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Golodnikov Sergey
+# Copyright 2024 Golodnikov Sergey
 
 
 from PySide import QtGui, QtCore
@@ -11,7 +11,15 @@ import re
 import shutil
 import subprocess
 import time
+import addFC_locator
 
+addFCWBpath = os.path.dirname(addFC_locator.__file__)
+addFCWB_icons_path = os.path.join(addFCWBpath, "Resources", "icons")
+
+# add translations path
+LanguagePath = os.path.join(addFCWBpath, "Resources", "translations")
+FreeCAD.Gui.addLanguagePath(LanguagePath)
+FreeCAD.Gui.updateLocale()
 
 if P.afc_additions['numpy'][0]:
     import numpy as np
@@ -139,12 +147,12 @@ def fuse_explode(obj, finish) -> None:
 def dialog() -> None:
 
     if not P.afc_additions['ffmpeg'][0]:
-        w.error.setText('FFmpeg is not available!')
+        w.error.setText(FreeCAD.Qt.translate("addFC", 'FFmpeg is not available!'))
         w.animationExport.setEnabled(False)
         w.exportSettings.setEnabled(False)
 
     if not P.afc_additions['numpy'][0]:
-        w.error.setText('NumPy is not available!')
+        w.error.setText(FreeCAD.Qt.translate("addFC", 'NumPy is not available!'))
         w.animate.setEnabled(False)
         w.animateAll.setEnabled(False)
 
@@ -245,7 +253,7 @@ def dialog() -> None:
         selection = FreeCAD.Gui.Selection.getSelectionEx('', 0)
         if len(selection) == 0:
             Logger.warning(
-                'To create a group, you need to select the elements...')
+                FreeCAD.Qt.translate("addFC", 'To create a group, you need to select the elements...'))
             return
 
         group = {
@@ -309,7 +317,7 @@ def dialog() -> None:
         explosion[title] = group
         model.appendRow(QtGui.QStandardItem(title))
         w.target.setText(title)
-        w.animationKeys.setText('Key frames: 0')
+        w.animationKeys.setText(FreeCAD.Qt.translate("addFC", 'Key frames: 0'))
         save()
 
         w.groups.selectionModel().clearSelection()
@@ -416,7 +424,7 @@ def dialog() -> None:
 
         # get animation:
         w.animationKeys.setText(
-            f"Key frames: {group['animation']['keyframes']}")
+            FreeCAD.Qt.translate("addFC", f"Key frames: {group['animation']['keyframes']}"))
         w.animationStep.setValue(group['animation']['step'])
         w.animationSplit.setChecked(group['animation']['split'])
         w.animationGuides.setChecked(group['animation']['guides'])
@@ -658,7 +666,7 @@ def dialog() -> None:
             i['keyframes'].clear()
         group['animation']['keyframes'] = 0
         w.animationKeys.setText(
-            f"Key frames: {group['animation']['keyframes']}")
+           FreeCAD.Qt.translate("addFC", f"Key frames: {group['animation']['keyframes']}"))
     w.animationClear.clicked.connect(animation_clear)
 
     def animation_add() -> None:
@@ -674,7 +682,7 @@ def dialog() -> None:
         group['animation']['guides'] = w.animationGuides.isChecked()
         group['animation']['keyframes'] += 1
         w.animationKeys.setText(
-            f"Key frames: {group['animation']['keyframes']}")
+            FreeCAD.Qt.translate("addFC", f"Key frames: {group['animation']['keyframes']}"))
     w.animationAddKey.clicked.connect(animation_add)
 
     def animation_play(single: bool = True) -> None:
@@ -693,9 +701,9 @@ def dialog() -> None:
         w.animationExport.setEnabled(False)
         w.exportSettings.setEnabled(False)
         if export:
-            w.animationStatus.setText('... export')
+            w.animationStatus.setText(FreeCAD.Qt.translate("addFC", '... export'))
         else:
-            w.animationStatus.setText('... playback')
+            w.animationStatus.setText(FreeCAD.Qt.translate("addFC", '... playback'))
 
         # def update_line(line: str, entity) -> None:
         #     guides = ad.getObject(group['guides']['title'])
@@ -934,7 +942,7 @@ def dialog() -> None:
         if '_storyboard' in storyboard:
             shutil.rmtree(storyboard)
         if output.returncode != 0:
-            Logger.error('ffmpeg: failed to create a video...')
+            Logger.error(FreeCAD.Qt.translate("addFC", 'ffmpeg: failed to create a video...'))
 
     # --------------- #
     # export settings #
