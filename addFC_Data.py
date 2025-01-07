@@ -134,7 +134,7 @@ properties_core = {
     'Price': ['Float', True, [], ''],
     'Quantity': ['Float', True, [], ''],
     'Unfold': ['Bool', False, [], ''],
-    'Unit': ['Enumeration', False, ['-', 'm', 'kg', 'm^2', 'm^3'], ''],
+    'Unit': ['Enumeration', False, ['-', 'mm', 'm', 'kg', 'm^2', 'm^3'], ''],
     'Weight': ['Float', True, [], ''],
 }
 

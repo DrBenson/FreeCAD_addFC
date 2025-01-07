@@ -626,7 +626,7 @@ def export(path: str, target: str, bom) -> str:
                             i = properties[i][3]
                         else:
                             if i == 'MetalThickness':
-                                i = 'MT'
+                                i = 'Metal Thickness'
                             if i == 'Quantity':
                                 i = 'Qty'
                     s.set(f'{alphabet[x]}{1}', i)
