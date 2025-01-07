@@ -2,17 +2,85 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_TW" sourcelanguage="en_US">
 <context>
+    <name>App::Property</name>
+    <message>
+        <source>Add</source>
+        <translation>額外屬性</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation>編碼</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>紙張格式</translation>
+    </message>
+    <message>
+        <source>Id</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>索引</translation>
+    </message>
+    <message>
+        <source>Metal Thickness</source>
+        <translation>金屬厚度</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名稱</translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation>節點</translation>
+    </message>
+    <message>
+        <source>Note</source>
+        <translation>注釋</translation>
+    </message>
+    <message>
+        <source>Price</source>
+        <translation>價格</translation>
+    </message>
+    <message>
+        <source>Quantity</source>
+        <translation>數量</translation>
+    </message>
+    <message>
+        <source>Section</source>
+        <translation>型材</translation>
+    </message>
+    <message>
+        <source>Unfold</source>
+        <translation>展開</translation>
+    </message>
+    <message>
+        <source>Unit</source>
+        <translation>單位</translation>
+    </message>
+    <message>
+        <source>Weight</source>
+        <translation>重量</translation>
+    </message>
+    <message>
+        <location filename="../../utils/addFC_Library_set.ui" line="78"/>
+        <source>Catalogs</source>
+        <translation>目錄</translation>
+    </message>
+    <message>
+        <location filename="../../utils/addFC_Library_set.ui" line="85"/>
+        <source>Files</source>
+        <translation>檔案</translation>
+    </message>
+    <message>
+        <location filename="../../utils/addFC_Library_set.ui" line="92"/>
+        <source>Objects</source>
+        <translation>物體</translation>
+    </message>
+</context>
+<context>
     <name>Form</name>
-    <message>
-        <location filename="../../InitGui.py" line="13"/>
-        <source>addFC</source>
-        <translation>FreeCAD附加工具</translation>
-    </message>
-    <message>
-        <location filename="../../InitGui.py" line="14"/>
-        <source>addFC Workbench</source>
-        <translation>FreeCAD附加工具 工作台</translation>
-    </message>
     <message>
         <location filename="../../utils/addFC_Explode_set.ui" line="21"/>
         <location filename="../../utils/addFC_Explode.ui" line="523"/>
@@ -111,7 +179,7 @@
     <message>
         <location filename="../../utils/addFC_Explode.ui" line="37"/>
         <source>Group 1</source>
-        <translation>群組 1</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../utils/addFC_Explode.ui" line="50"/>
@@ -182,7 +250,7 @@
     <message>
         <location filename="../../utils/addFC_Explode.ui" line="279"/>
         <source>Combine</source>
-        <translation>融合</translation>
+        <translation>組合零件</translation>
     </message>
     <message>
         <location filename="../../utils/addFC_Explode.ui" line="286"/>
@@ -284,7 +352,7 @@
     <message>
         <location filename="../../utils/addFC_Explode.ui" line="615"/>
         <source>Animate all</source>
-        <translation>全部動畫化</translation>
+        <translation>產生全部動畫</translation>
     </message>
     <message>
         <location filename="../../utils/addFC_Explode.ui" line="628"/>
@@ -294,7 +362,7 @@
     <message>
         <location filename="../../utils/addFC_Explode.ui" line="641"/>
         <source>Combine all</source>
-        <translation>全部融合</translation>
+        <translation>組合全部零件</translation>
     </message>
     <message>
         <location filename="../../utils/addFC_Library_set.ui" line="24"/>
@@ -565,7 +633,7 @@
     <message>
         <location filename="../../repo/ui/info.ui" line="85"/>
         <source>Update enumerations</source>
-        <translation>更新列舉</translation>
+        <translation>更新列表</translation>
     </message>
     <message>
         <location filename="../../repo/ui/info.ui" line="98"/>
@@ -855,7 +923,7 @@ All models are created in FreeCAD version 0.21.2.</source>
     <message>
         <location filename="../../repo/ui/pref_uProp.ui" line="32"/>
         <source>Name of the property group: «Add»</source>
-        <translation>屬性組名稱: &quot;新增&quot;</translation>
+        <translation>屬性組名稱: &quot;額外屬性&quot;</translation>
     </message>
     <message>
         <location filename="../../repo/ui/pref_uProp.ui" line="52"/>
@@ -870,7 +938,7 @@ All models are created in FreeCAD version 0.21.2.</source>
     <message>
         <location filename="../../repo/ui/pref_uProp.ui" line="111"/>
         <source>Available types: Bool, Enumeration, Float, Integer, String</source>
-        <translation>可用型別: 布林型、列舉型、浮點型、整數型、字串型
+        <translation>可用型別: 布林型、列表型、浮點型、整數型、字串型
 &#x3000;&#x3000;&#x3000;&#x3000; (Bool, Enumeration, Float, Integer, String)</translation>
     </message>
     <message>
@@ -918,6 +986,16 @@ All models are created in FreeCAD version 0.21.2.</source>
         <source>Link thickness</source>
         <translation>連結厚度</translation>
     </message>
+    <message>
+        <location filename="../../InitGui.py" line="13"/>
+        <source>addFC</source>
+        <translation>FreeCAD附加工具</translation>
+    </message>
+    <message>
+        <location filename="../../InitGui.py" line="14"/>
+        <source>addFC Workbench</source>
+        <translation>FreeCAD附加工具 工作台</translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
@@ -936,6 +1014,105 @@ All models are created in FreeCAD version 0.21.2.</source>
 </context>
 <context>
     <name>addFC</name>
+    <message>
+        <location filename="../../addFC_Info.py" line="135"/>
+        <source>Документация</source>
+        <translation>檔案</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Info.py" line="505"/>
+        <location filename="../../addFC_Info.py" line="508"/>
+        <location filename="../../addFC_Info.py" line="682"/>
+        <location filename="../../addFC_Info.py" line="685"/>
+        <source>Прочие изделия</source>
+        <translation>其他產品</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Info.py" line="541"/>
+        <source>The BOM is empty...</source>
+        <translation>BOM 物料清單為空白...</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Info.py" line="743"/>
+        <source>The allowed number of elements has been exceeded!</source>
+        <translation>已超出允許的元素數量!</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Info.py" line="910"/>
+        <source>Export complete</source>
+        <translation>匯出完成</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="215"/>
+        <location filename="../../addFC_Preference.py" line="523"/>
+        <source>Title</source>
+        <translation>標題</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="215"/>
+        <source>Type</source>
+        <translation>類型</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="215"/>
+        <source>Addition</source>
+        <translation>補充內容</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="215"/>
+        <source>Alias</source>
+        <translation>別名</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="216"/>
+        <source>Property</source>
+        <translation>屬性</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="216"/>
+        <source>Values</source>
+        <translation>值</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="294"/>
+        <source>... use the materials tab</source>
+        <translation>... 使用材料分頁內容</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="523"/>
+        <source>Category</source>
+        <translation>類別</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="523"/>
+        <source>Density</source>
+        <translation>密度</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="523"/>
+        <source>Unit</source>
+        <translation>單位</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="523"/>
+        <source>Price per unit</source>
+        <translation>單價</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="764"/>
+        <source>Thickness</source>
+        <translation>厚度</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="764"/>
+        <source>Radius</source>
+        <translation>半徑</translation>
+    </message>
+    <message>
+        <location filename="../../addFC_Preference.py" line="764"/>
+        <source>K-Factor</source>
+        <translation>K-係數</translation>
+    </message>
     <message>
         <location filename="../../addFC.py" line="67"/>
         <source>Recent File</source>
@@ -994,7 +1171,7 @@ All models are created in FreeCAD version 0.21.2.</source>
     <message>
         <location filename="../../addFC.py" line="542"/>
         <source>Enumerations updated</source>
-        <translation>已更新列舉</translation>
+        <translation>已更新列表</translation>
     </message>
     <message>
         <location filename="../../addFC.py" line="553"/>
@@ -1083,105 +1260,6 @@ All models are created in FreeCAD version 0.21.2.</source>
         <translation>透過點建立管道</translation>
     </message>
     <message>
-        <location filename="../../addFC_Info.py" line="135"/>
-        <source>Документация</source>
-        <translation>檔案</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Info.py" line="505"/>
-        <location filename="../../addFC_Info.py" line="508"/>
-        <location filename="../../addFC_Info.py" line="682"/>
-        <location filename="../../addFC_Info.py" line="685"/>
-        <source>Прочие изделия</source>
-        <translation>其他產品</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Info.py" line="541"/>
-        <source>The BOM is empty...</source>
-        <translation>BOM 物料清單為空白...</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Info.py" line="743"/>
-        <source>The allowed number of elements has been exceeded!</source>
-        <translation>已超出允許的元素數量!</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Info.py" line="910"/>
-        <source>Export complete</source>
-        <translation>匯出完成</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="215"/>
-        <source>Type</source>
-        <translation>類型</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="215"/>
-        <source>Addition</source>
-        <translation>補充內容</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="215"/>
-        <source>Alias</source>
-        <translation>別名</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="215"/>
-        <location filename="../../addFC_Preference.py" line="523"/>
-        <source>Title</source>
-        <translation>標題</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="216"/>
-        <source>Property</source>
-        <translation>屬性</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="216"/>
-        <source>Values</source>
-        <translation>值</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="294"/>
-        <source>... use the materials tab</source>
-        <translation>... 使用材料分頁內容</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="523"/>
-        <source>Category</source>
-        <translation>類別</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="523"/>
-        <source>Density</source>
-        <translation>密度</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="523"/>
-        <source>Unit</source>
-        <translation>單位</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="523"/>
-        <source>Price per unit</source>
-        <translation>單價</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="764"/>
-        <source>Thickness</source>
-        <translation>厚度</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="764"/>
-        <source>Radius</source>
-        <translation>半徑</translation>
-    </message>
-    <message>
-        <location filename="../../addFC_Preference.py" line="764"/>
-        <source>K-Factor</source>
-        <translation>K-係數</translation>
-    </message>
-    <message>
         <location filename="../../addFC_Unfold.py" line="62"/>
         <source>Warning: SheetMetal Workbench is not available!</source>
         <translation>警告: 鈑金工作台 不可用!</translation>
@@ -1201,68 +1279,62 @@ All models are created in FreeCAD version 0.21.2.</source>
         <source>...done</source>
         <translation>... 完成</translation>
     </message>
-</context>
-<context>
-    <name>App::Property</name>
     <message>
-        <source>Add</source>
-        <translation>額外屬性</translation>
+        <location filename="../../utils/addFC_Explode.py" line="142"/>
+        <source>FFmpeg is not available!</source>
+        <translation>FFmpeg 不可用!</translation>
     </message>
     <message>
-        <source>Code</source>
-        <translation>編碼</translation>
+        <location filename="../../utils/addFC_Explode.py" line="147"/>
+        <source>NumPy is not available!</source>
+        <translation>NumPy 不可用!</translation>
     </message>
     <message>
-        <source>Format</source>
-        <translation>紙張格式</translation>
+        <location filename="../../utils/addFC_Explode.py" line="164"/>
+        <source>Shape</source>
+        <translation>造型</translation>
     </message>
     <message>
-        <source>Id</source>
-        <translation>ID</translation>
+        <location filename="../../utils/addFC_Explode.py" line="164"/>
+        <source>BoundBox</source>
+        <translation>邊界區塊</translation>
     </message>
     <message>
-        <source>Index</source>
-        <translation>索引</translation>
+        <location filename="../../utils/addFC_Explode.py" line="164"/>
+        <source>None</source>
+        <translation>無</translation>
     </message>
     <message>
-        <source>Metal Thickness</source>
-        <translation>金屬厚度</translation>
+        <location filename="../../utils/addFC_Explode.py" line="256"/>
+        <source>To create a group, you need to select the elements...</source>
+        <translation>要建立群組，您需要選擇元件...</translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation>名稱</translation>
+        <location filename="../../utils/addFC_Explode.py" line="427"/>
+        <location filename="../../utils/addFC_Explode.py" line="669"/>
+        <location filename="../../utils/addFC_Explode.py" line="685"/>
+        <source>Key frames: {group[&apos;animation&apos;][&apos;keyframes&apos;]}</source>
+        <translation>關鍵影格: {group[&apos;animation&apos;][&apos;keyframes&apos;]}</translation>
     </message>
     <message>
-        <source>Node</source>
-        <translation>節點</translation>
+        <location filename="../../utils/addFC_Explode.py" line="704"/>
+        <source>... export</source>
+        <translation>... 匯出</translation>
     </message>
     <message>
-        <source>Note</source>
-        <translation>注釋</translation>
+        <location filename="../../utils/addFC_Explode.py" line="706"/>
+        <source>... playback</source>
+        <translation>... 回放</translation>
     </message>
     <message>
-        <source>Price</source>
-        <translation>價格</translation>
+        <location filename="../../utils/addFC_Explode.py" line="945"/>
+        <source>ffmpeg: failed to create a video...</source>
+        <translation>ffmpeg: 建立影片失敗...</translation>
     </message>
     <message>
-        <source>Quantity</source>
-        <translation>數量</translation>
-    </message>
-    <message>
-        <source>Section</source>
-        <translation>型材</translation>
-    </message>
-    <message>
-        <source>Unfold</source>
-        <translation>展開</translation>
-    </message>
-    <message>
-        <source>Unit</source>
-        <translation>單位</translation>
-    </message>
-    <message>
-        <source>Weight</source>
-        <translation>重量</translation>
+        <location filename="../../utils/addFC_Explode.py" line="312"/>
+        <source>Key frames: 0</source>
+        <translation>關鍵影格: 0</translation>
     </message>
 </context>
 </TS>
