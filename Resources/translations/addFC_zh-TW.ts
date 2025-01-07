@@ -1017,7 +1017,7 @@ All models are created in FreeCAD version 0.21.2.</source>
     <message>
         <location filename="../../addFC_Info.py" line="135"/>
         <source>Документация</source>
-        <translation>檔案</translation>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../../addFC_Info.py" line="505"/>
@@ -1146,12 +1146,12 @@ All models are created in FreeCAD version 0.21.2.</source>
     <message>
         <location filename="../../addFC.py" line="153"/>
         <source>Model Information</source>
-        <translation>模型資訊</translation>
+        <translation>模型資訊-BOM 物料清單</translation>
     </message>
     <message>
         <location filename="../../addFC.py" line="156"/>
         <source>Model information (BOM)</source>
-        <translation>模型資訊 (BOM)</translation>
+        <translation>模型資訊-BOM 物料清單</translation>
     </message>
     <message>
         <location filename="../../addFC.py" line="404"/>
