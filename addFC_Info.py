@@ -88,11 +88,6 @@ def price_equation(obj, material: list) -> None:
     match material[2]:
         case '-':
             return
-        case 'mm':
-            u = 'Add_Unit'
-            if u in obj.PropertiesList:
-                if obj.getPropertyByName(u) == 'mm':
-                    obj.setExpression(p, f'{u} * {price}')
         case 'm':
             u = 'Add_Unit'
             if u in obj.PropertiesList:
@@ -477,7 +472,6 @@ def compilation(strict: bool = True,
 
 UNIT_RU = {
     '-': '',
-    'mm': 'мм.',
     'm': 'м.',
     'kg': 'кг.',
     'm^2': 'м^2',

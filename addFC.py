@@ -64,8 +64,10 @@ class AddFCOpenRecentFile():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'resent.svg'),
                 'Accel': 'R',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Recent File'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Open recent file')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Recent File'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Open recent file')}
 
     def Activated(self):
         ld = tuple(FreeCAD.listDocuments().keys())
@@ -82,7 +84,7 @@ class AddFCOpenRecentFile():
                 FreeCAD.Gui.SendMsgToActiveView('ViewFit')
                 return
 
-        Logger.error('The file cannot be opened...')
+        FreeCAD.Gui.runCommand('Std_Open')
 
     def IsActive(self): return True
 
@@ -98,8 +100,10 @@ class AddFCDisplay():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'display.svg'),
                 'Accel': 'D',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Display'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Isometry and fit all')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Display'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Isometry and fit all')}
 
     def Activated(self):
         try:
@@ -123,8 +127,10 @@ class AddFCModelControl():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'control.svg'),
                 'Accel': 'C',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Model Control'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Run the model control file')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Model Control'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Run the model control file')}
 
     def Activated(self):
         file = str(FreeCAD.ActiveDocument.getFileName())
@@ -150,8 +156,10 @@ class AddFCModelInfo():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'info.svg'),
                 'Accel': 'I',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Model Information'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Model information (BOM)')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Model Information'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Model information (BOM)')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -779,8 +787,10 @@ class AddFCProperties():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'properties.svg'),
                 'Accel': 'A',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Add Properties'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Add properties to an object')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Add Properties'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Add properties to an object')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -1198,8 +1208,10 @@ class AddFCInsert():
 
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'insert.svg'),
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Creating a Drawing'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Create a drawing based on a template')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Creating a Drawing'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Create a drawing based on a template')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -1304,8 +1316,10 @@ class AddFCAssistant():
 
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'help.svg'),
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Help and Example'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Help and Example')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Help and Example'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Help and Example')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -1369,8 +1383,10 @@ class AddFCLibrary():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'library.svg'),
                 'Accel': 'L',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Library'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Component library')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Library'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Component library')}
 
     def Activated(self):
         file = os.path.join(P.AFC_PATH, 'utils', 'addFC_Library.py')
@@ -1392,8 +1408,10 @@ class AddFCExplode():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'explode.svg'),
                 'Accel': 'E',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Explode'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Exploded view')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Explode'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Exploded view')}
 
     def Activated(self):
         file = os.path.join(P.AFC_PATH, 'utils', 'addFC_Explode.py')
@@ -1415,8 +1433,10 @@ class AddFCPipe():
     def GetResources(self):
         return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'pipe.svg'),
                 'Accel': 'P',
-                'MenuText': FreeCAD.Qt.translate("addFC", 'Pipe'),
-                'ToolTip': FreeCAD.Qt.translate("addFC", 'Creating a pipe by points')}
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Pipe'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Creating a pipe by points')}
 
     def Activated(self):
         file = os.path.join(P.AFC_PATH, 'utils', 'addFC_Pipe.py')

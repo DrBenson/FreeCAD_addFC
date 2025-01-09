@@ -4,9 +4,8 @@
 
 import addFC_Preference as P
 import FreeCAD
-import FreeCADGui
 import os
-import re
+
 import addFC_locator
 
 from FreeCAD import Gui
@@ -18,7 +17,6 @@ addFCWB_icons_path = os.path.join(addFCWBpath, "Resources", "icons")
 LanguagePath = os.path.join(addFCWBpath, "Resources", "translations")
 Gui.addLanguagePath(LanguagePath)
 Gui.updateLocale()
-
 
 class addFC(FreeCAD.Gui.Workbench):
 

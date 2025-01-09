@@ -300,7 +300,7 @@ def unfold(w, details: dict, path: str, skip: list = []) -> None:
                 ImportGui.export([body], f)
 
         cleaning('')
-        Logger.log(FreeCAD.Qt.translate("addFC", '...done'))
+        Logger.log('...done')
 
         progress_value += progress_step
         w.progress.setValue(progress_value)
