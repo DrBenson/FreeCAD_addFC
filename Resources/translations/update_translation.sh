@@ -61,7 +61,7 @@ is_locale_supported() {
 update_locale() {
 	local locale="$1"
 	local u=${locale:+_} # Conditional underscore
-	FILES="../../*.py ../../utils/*.py  ../../utils/*.ui ../../repo/ui/*.ui"
+	FILES="../../*.py ../../repo/ui/*.ui"
 
 	# NOTE: Execute the right command depending on:
 	# - if it's a locale file or the main, agnostic one
