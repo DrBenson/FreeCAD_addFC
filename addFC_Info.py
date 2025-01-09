@@ -132,7 +132,7 @@ def compilation(strict: bool = True,
                 ) -> tuple[dict, dict, dict, dict, dict]:
 
     index_pt = 'App::PropertyString'  # important, type: string
-    index_exception = ('Add_Section', 'Документация')
+    index_exception = ('Add_Section', FreeCAD.Qt.translate("addFC",'Документация'))
 
     group = 'Add_'
 
@@ -501,9 +501,9 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
         if merger == 'Section':  # USDD
             if 'Section' in unit:
                 if unit['Section'] == '-':
-                    unit['Section'] = 'Прочие изделия'
+                    unit['Section'] = FreeCAD.Qt.translate("addFC",'Прочие изделия')
             else:
-                unit['Section'] = 'Прочие изделия'
+                unit['Section'] = FreeCAD.Qt.translate("addFC",'Прочие изделия')
 
         for j in skip:
             if j in unit:
@@ -536,7 +536,7 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
 def export(path: str, target: str, bom) -> str:
 
     if len(bom[0]) == 0:
-        return 'The BOM is empty...'
+        return FreeCAD.Qt.translate("addFC", 'The BOM is empty...')
 
     conf, properties = P.pref_configuration, P.pref_properties
 
@@ -678,9 +678,9 @@ def export(path: str, target: str, bom) -> str:
                     if 'Section' in j:
                         section = j['Section']
                         if section == '-':
-                            section = 'Прочие изделия'
+                            section = FreeCAD.Qt.translate("addFC",'Прочие изделия')
                     else:
-                        section = 'Прочие изделия'
+                        section = FreeCAD.Qt.translate("addFC",'Прочие изделия')
 
                     for k in j:
                         if k in r:
@@ -739,7 +739,7 @@ def export(path: str, target: str, bom) -> str:
 
                 # do you need more pages?
                 if count > limit[0] + limit[1] * 2:
-                    e = 'The allowed number of elements has been exceeded!'
+                    e = FreeCAD.Qt.translate("addFC", 'The allowed number of elements has been exceeded!')
                     Logger.error(e)
 
                 if count > limit[0] + limit[1]:
@@ -906,4 +906,4 @@ def export(path: str, target: str, bom) -> str:
 
             ad.recompute()
 
-    return 'Export complete'
+    return FreeCAD.Qt.translate("addFC", 'Export complete')

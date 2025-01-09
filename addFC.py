@@ -409,7 +409,7 @@ class AddFCModelInfo():
                 node_name=get_node_name(),
             )
             structure_update()
-            w.info.setText('Updated')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Updated'))
 
         def structure_purge() -> None:
             table.setSortingEnabled(False)
@@ -425,7 +425,7 @@ class AddFCModelInfo():
 
         def structure_purge_wrapper() -> None:
             structure_purge()
-            w.info.setText('Cleared')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Cleared'))
 
         structure_update()
         w.info.setText('...')
@@ -536,7 +536,7 @@ class AddFCModelInfo():
                 indexing=True,
             )
             structure_update()
-            w.info.setText('Elements are indexed')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Elements are indexed'))
         w.pushButtonIndexing.clicked.connect(indexing)
 
         def update_enumerations() -> None:
@@ -547,7 +547,7 @@ class AddFCModelInfo():
                 update_enumerations=True,
             )
             structure_update()
-            w.info.setText('Enumerations updated')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Enumerations updated'))
         w.pushButtonUEnum.clicked.connect(update_enumerations)
 
         def update_equations() -> None:
@@ -558,7 +558,7 @@ class AddFCModelInfo():
                 update_equations=True,
             )
             structure_update()
-            w.info.setText('Equations updated')
+            w.info.setText(FreeCAD.Qt.translate("addFC", 'Equations updated'))
         w.pushButtonUEq.clicked.connect(update_equations)
 
         def spec_export_settings() -> None:
@@ -928,7 +928,7 @@ class AddFCProperties():
 
         def add() -> None:
             if len(FreeCAD.Gui.Selection.getSelection()) < 1:
-                w.info.setText('You need to select an object')
+                w.info.setText(FreeCAD.Qt.translate("addFC", 'You need to select an object'))
                 return
             w.info.setText('')
 
@@ -1146,7 +1146,7 @@ class AddFCProperties():
                 w.checkBoxLT.setEnabled(False)
                 cb_materials.setEnabled(True)
                 return
-            w.comboBoxSMP.setCurrentText('Galvanized')
+            w.comboBoxSMP.setCurrentText(FreeCAD.Qt.translate("addFC", 'Galvanized'))
             w.comboBoxSMP.setEnabled(True)
             w.checkBoxLT.setEnabled(True)
             w.checkBoxLT.setChecked(True)
@@ -1231,8 +1231,8 @@ class AddFCInsert():
         for i in tpl.keys():
             model.appendRow(QtGui.QStandardItem(i.rstrip('.svg')))
 
-        w.label.setText('Select a template to create a drawing.')
-        w.pushButton.setText('Create')
+        w.label.setText(FreeCAD.Qt.translate("addFC", 'Select a template to create a drawing.'))
+        w.pushButton.setText(FreeCAD.Qt.translate("addFC", 'Create'))
         w.show()
 
         def create() -> None:
@@ -1330,7 +1330,7 @@ class AddFCAssistant():
         for i in examples:
             model.appendRow(QtGui.QStandardItem(i))
 
-        w.pushButton.setText('Open')
+        w.pushButton.setText(FreeCAD.Qt.translate("addFC", 'Open'))
         w.show()
 
         def unzip(reset: bool) -> None:
