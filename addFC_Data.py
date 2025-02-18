@@ -3,10 +3,10 @@
 
 
 import os
-
+import FreeCAD
 
 configuration = {
-    'interface_font': [False, 'Sans Serif', 10],
+    'interface_font': [False, 'Blender Mono I18n', 10],
     'working_directory': '',
     'default_material': 'Galvanized',
     # unfold:
@@ -22,16 +22,16 @@ configuration = {
     'bom_export_type': 'Spreadsheet',
     'bom_export_alias': ['csv', 'spreadsheet'],
     'bom_export_merger': 'Type',
-    'bom_export_sort': 'Name',
+    'bom_export_sort': 'Index',
     'bom_export_skip': [],
     # sheet metal part:
     'smp_color': tuple(int('b4c0c8'[i:i + 2], 16) for i in (0, 2, 4)),
     # USDD:
-    'ru_std_tpl_drawing': 'RU_Portrait_A4.svg',
-    'ru_std_tpl_text': 'RU_Portrait_A4_T_1.svg',
-    'ru_std_tpl_stamp': {
+    'std_tpl_drawing': 'Portrait_A4.svg',
+    'std_tpl_text': 'Portrait_A4_T_1.svg',
+    'std_tpl_stamp': {
         'Designation': 'XXXX.XXXXXX.XXX',
-        'Author': 'Иванов И. И.',
+        'Author': '',
         'Inspector': '',
         'Control 1': '',
         'Control 2': '',
@@ -39,10 +39,10 @@ configuration = {
         'Material 1': '',
         'Material 2': '',
         'Company 1': '',
-        'Company 2': 'Организация',
+        'Company 2': '',
         'Company 3': '',
         'Title 1': '',
-        'Title 2': 'Изделие',
+        'Title 2': '',
         'Title 3': '',
         'Weight': '',
         'Scale': '1:1',
@@ -77,7 +77,7 @@ explosion = {
     'export_ccs': False,
     'export_image_format': 'PNG',
     'export_framerate': 60,
-    'export_dir': os.path.expanduser('~/Desktop'),
+    'export_dir': os.path.expanduser(FreeCAD.Qt.translate("Form",'~/Desktop')),
 }
 
 
@@ -86,19 +86,19 @@ explosion = {
 materials = {
     '-': None,
     # standard:
-    'Galvanized': ['Sheet metal', 7870, 'm^2', 0],
-    'Stainless': ['Sheet metal', 7900, 'm^2', 0],
+    'Galvanized': ['Sheet metal', 7874, 'm^2', 4],
+    'Stainless': ['Sheet metal', 7900, 'm^2', 4.2],
     # general:
-    'Aluminum': ['General', 2700, 'kg', 0],
+    'Aluminum': ['General', 2780, 'kg', 0],
     'Brass': ['General', 8600, 'kg', 0],
-    'Cast iron': ['General', 7300, 'kg', 0],
+    'Cast iron': ['General', 7874, 'kg', 4],
     'Ceramic': ['General', 2300, 'kg', 0],
     'Concrete': ['General', 2410, 'm^3', 0],
     'Copper': ['General', 8900, 'kg', 0],
     'Glass': ['General', 2530, 'kg', 0],
     'Mineral wool': ['General', 100, 'm^2', 0],
     'Rubber': ['General', 1000, 'kg', 0],
-    'Steel': ['General', 7800, 'kg', 0],
+    'Steel': ['General', 7850, 'kg', 4],
     # aisi:
     'AISI 201': ['Sheet metal', 7860, 'm^2', 0],
     'AISI 304': ['Sheet metal', 7950, 'm^2', 0],
@@ -106,11 +106,12 @@ materials = {
     'AISI 321': ['Sheet metal', 8020, 'm^2', 0],
     'AISI 430': ['Sheet metal', 7720, 'm^2', 0],
     # plastic:
-    'ABS': ['Plastic', 1040, 'kg', 0],
-    'PET/G': ['Plastic', 1340, 'kg', 0],
+    'ABS': ['Plastic', 1040, 'kg', 11.5],
+    'PC/Fiber': ['Plastic', 1.55, 'kg', 19],
+    'PET/G': ['Plastic', 1340, 'kg', 30],
     'PLA': ['Plastic', 1240, 'kg', 0],
-    'PP': ['Plastic', 900, 'kg', 0],
-    'PVC': ['Plastic', 1330, 'kg', 0],
+    'PP': ['Plastic', 905, 'kg', 8.7],
+    'PVC': ['Plastic', 1330, 'kg', 6.6],
     # rubber:
     'EPDM': ['Rubber', 155, 'kg', 0],
     'Natural rubber': ['Rubber', 920, 'kg', 0],
@@ -126,44 +127,44 @@ materials = {
 
 properties_core = {
     # required:
-    'Name': ['String', False, [], ''],
+    'Name': ['String', True, [], FreeCAD.Qt.translate("Form",'Name')],
     # core:
-    'Code': ['String', False, [], ''],
-    'Index': ['String', False, [], ''],
-    'Material': ['Enumeration', False, ['-', 'Galvanized', 'Stainless', ], ''],
-    'MetalThickness': ['Float', False, [], ''],
-    'Node': ['String', False, [], ''],
-    'Price': ['Float', True, [], ''],
-    'Quantity': ['Float', True, [], ''],
-    'Unfold': ['Bool', False, [], ''],
-    'Unit': ['Enumeration', False, ['-', 'm', 'kg', 'm^2', 'm^3'], ''],
-    'Weight': ['Float', True, [], ''],
+    'Code': ['String', False, [], FreeCAD.Qt.translate("Form",'Code')],
+    'Index': ['String', True, [], FreeCAD.Qt.translate("Form",'Index')],
+    'Material': ['Enumeration', False, ['-', 'Galvanized', 'Stainless', ], FreeCAD.Qt.translate("Form",'Material')],
+    'MetalThickness': ['Float', False, [], FreeCAD.Qt.translate("Form",'Metal Thickness')],
+    'Node': ['String', False, [], FreeCAD.Qt.translate("Form",'Node')],
+    'Price': ['Float', True, [], FreeCAD.Qt.translate("Form",'Price')],
+    'Quantity': ['Float', True, [], FreeCAD.Qt.translate("Form",'Quantity')],
+    'Unfold': ['Bool', False, [], FreeCAD.Qt.translate("Form",'Unfold')],
+    'Unit': ['Enumeration', False, ['-', 'm', 'kg', 'm^2', 'm^3'], FreeCAD.Qt.translate("Form",'Unit')],
+    'Weight': ['Float', True, [], FreeCAD.Qt.translate("Form",'Weight')],
 }
 
 properties_add = {
     # additional:
-    'Format': ['Enumeration', False, ['-', 'A0', 'A1', 'A2', 'A3', 'A4'], ''],
-    'Id': ['String', False, [], ''],
-    'Note': ['String', False, [], ''],
+    'Format': ['Enumeration', False, ['-', 'A0', 'A1', 'A2', 'A3', 'A4'], FreeCAD.Qt.translate("Form",'Format')],
+    'Id': ['String', False, [], FreeCAD.Qt.translate("Form",'Id')],
+    'Note': ['String', False, [], FreeCAD.Qt.translate("Form",'Note')],
     'Type': ['Enumeration', False, [
         '-',
-        'Part',
-        'Sheet metal part',
-        'Fastener',
-        'Material',
-    ], ''],
+        FreeCAD.Qt.translate("Form",'Part'),
+        FreeCAD.Qt.translate("Form",'Sheet metal part'),
+        FreeCAD.Qt.translate("Form",'Fastener'),
+        FreeCAD.Qt.translate("Section",'Material'),
+    ], FreeCAD.Qt.translate("Form",'Type')],
     # разделы спецификации ЕСКД:
     'Section': ['Enumeration', False, [
         '-',
-        'Документация',
-        'Комплексы',
-        'Сборочные единицы',
-        'Детали',
-        'Стандартные изделия',
-        'Прочие изделия',
-        'Материалы',
-        'Комплекты',
-    ], ''],
+        FreeCAD.Qt.translate("Form",'Documentation'),
+        FreeCAD.Qt.translate("Form",'Complexes'),
+        FreeCAD.Qt.translate("Form",'Assembly units'),
+        FreeCAD.Qt.translate("Form",'Parts'),
+        FreeCAD.Qt.translate("Form",'Standard products'),
+        FreeCAD.Qt.translate("Form",'Other products'),
+        FreeCAD.Qt.translate("Section",'Materials'),
+        FreeCAD.Qt.translate("Form",'Kits'),
+    ], FreeCAD.Qt.translate("Form",'Section')],
 }
 
 

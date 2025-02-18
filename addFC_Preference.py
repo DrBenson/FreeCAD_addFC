@@ -216,8 +216,8 @@ class addFCPreferenceProperties():
         self.form = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
             AFC_PATH, 'repo', 'ui', 'pref_uProp.ui'))
 
-        headers_properties = ('Title', 'Type', 'Addition', 'Alias')
-        headers_values = ('Property', 'Values')
+        headers_properties = (FreeCAD.Qt.translate("addFC",'Title'),  FreeCAD.Qt.translate("addFC", 'Type'), FreeCAD.Qt.translate("addFC", 'Addition'), FreeCAD.Qt.translate("addFC", 'Alias'))
+        headers_values = (FreeCAD.Qt.translate("addFC",'Property'), FreeCAD.Qt.translate("addFC",'Values'))
 
         color_black = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         color_blue = QtGui.QBrush(QtGui.QColor(0, 0, 150))
@@ -279,7 +279,7 @@ class addFCPreferenceProperties():
             #
             x += 1
 
-        align(table_properties, headers_properties.index('Title'))
+        align(table_properties, headers_properties.index(FreeCAD.Qt.translate("addFC",'Title')))
 
         # ------ #
         # values #
@@ -294,8 +294,8 @@ class addFCPreferenceProperties():
             i = QtGui.QTableWidgetItem(key)
             i.setFlags(QtCore.Qt.NoItemFlags)
             table_values.setItem(x, 0, i)
-            if key == 'Material':
-                i = QtGui.QTableWidgetItem('... use the materials tab')
+            if key == 'Material' or key == FreeCAD.Qt.translate('Form', 'Material'):
+                i = QtGui.QTableWidgetItem(FreeCAD.Qt.translate("addFC", '... use the materials tab'))
                 i.setFlags(QtCore.Qt.NoItemFlags)
                 table_values.setItem(x, 1, i)
             elif key == 'Unit':
@@ -307,7 +307,7 @@ class addFCPreferenceProperties():
                 table_values.setItem(x, 1, i)
             x += 1
 
-        align(table_values, headers_values.index('Values'))
+        align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC",'Values')))
 
         # ------- #
         # actions #
@@ -422,8 +422,8 @@ class addFCPreferenceProperties():
 
         def changed_wrapper(item) -> None:
             check_values(changed(item))
-            align(table_properties, headers_properties.index('Title'))
-            align(table_values, headers_values.index('Values'))
+            align(table_properties, headers_properties.index(FreeCAD.Qt.translate("addFC",'Title')))
+            align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC",'Values')))
 
         def switch(item) -> None:
             if item is None:
@@ -501,7 +501,7 @@ class addFCPreferenceProperties():
             p_title = table_values.item(row, 0).text()
             if p_title not in properties or table_values.item(row, 1) is None:
                 continue
-            if p_title == 'Material':
+            if p_title == 'Material' or p_title == FreeCAD.Qt.translate('Form', 'Material'):
                 # core, only:
                 properties[p_title][2] = Data.properties_core['Material'][2]
             else:
@@ -524,7 +524,7 @@ class addFCPreferenceMaterials():
         self.form = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
             AFC_PATH, 'repo', 'ui', 'pref_materials.ui'))
 
-        headers = ('Title', 'Category', 'Density', 'Unit', 'Price per unit')
+        headers = (FreeCAD.Qt.translate("addFC",'Title'), FreeCAD.Qt.translate("addFC", 'Category'), FreeCAD.Qt.translate("addFC", 'Density'), FreeCAD.Qt.translate("addFC", 'Unit'), FreeCAD.Qt.translate("addFC", 'Price per unit'))
 
         table = self.form.tableMaterials
         units = Data.properties_core['Unit'][2]  # standard
@@ -609,7 +609,7 @@ class addFCPreferenceMaterials():
                 table.setItem(x, 4, i)
                 #
                 x += 1
-            align(table, headers.index('Title'))
+            align(table, headers.index(FreeCAD.Qt.translate("addFC",'Title')))
             table.setSortingEnabled(True)
 
         fill()
@@ -688,7 +688,7 @@ class addFCPreferenceMaterials():
         def changed_wrapper(item) -> None:
             changed(item)
             set_default_material()
-            align(table, headers.index('Title'))
+            align(table, headers.index(FreeCAD.Qt.translate("addFC",'Title')))
 
         self.form.tableMaterials.itemChanged.connect(changed_wrapper)
 
@@ -765,7 +765,7 @@ class addFCPreferenceSM():
         table_galvanized = self.form.tableGalvanized
         table_stainless = self.form.tableStainless
 
-        headers = ('Thickness', 'Radius', 'K-Factor')
+        headers = (FreeCAD.Qt.translate("addFC", 'Thickness'), FreeCAD.Qt.translate("addFC", 'Radius'), FreeCAD.Qt.translate("addFC", 'K-Factor'))
 
         def align(t) -> None:
             t.resizeColumnsToContents()
@@ -899,14 +899,14 @@ class addFCPreferenceSM():
 # ------------------------------------------------------------------------------
 
 
-PATH_RU_TPL = os.path.join(AFC_PATH, 'repo', 'add', 'stdRU', 'tpl')
+PATH_TPL = os.path.join(AFC_PATH, 'repo', 'add', 'stdRU', 'tpl')
 
 
 def get_tpl() -> tuple[list, list, dict]:
     drawing, text, tpl = [], [], {}
     dirs = (
-        os.path.join(PATH_RU_TPL, 'ЕСКД'),
-        os.path.join(PATH_RU_TPL, 'СПДС'),
+        os.path.join(PATH_TPL, 'en'),
+        os.path.join(PATH_TPL, 'ЕСКД'),
     )
     for d in dirs:
         if os.path.exists(d):
@@ -944,7 +944,7 @@ class addFCPreferenceOther():
         self.form.ffmpeg.setChecked(afc_additions['ffmpeg'][0])
         self.form.ffmpeg.setStyleSheet(afc_additions['ffmpeg'][2])
 
-        stamp = pref_configuration['ru_std_tpl_stamp']
+        stamp = pref_configuration['std_tpl_stamp']
 
         self.form.Designation.setText(stamp['Designation'])
         self.form.Author.setText(stamp['Author'])
@@ -972,9 +972,9 @@ class addFCPreferenceOther():
         self.form.Text.addItems(text)
 
         self.form.Drawing.setCurrentText(
-            pref_configuration['ru_std_tpl_drawing'])
+            pref_configuration['std_tpl_drawing'])
         self.form.Text.setCurrentText(
-            pref_configuration['ru_std_tpl_text'])
+            pref_configuration['std_tpl_text'])
 
         return
 
@@ -987,9 +987,9 @@ class addFCPreferenceOther():
                 self.form.fontComboBox.currentText(),
                 self.form.fontSpinBox.value(),
             ],
-            'ru_std_tpl_drawing': self.form.Drawing.currentText(),
-            'ru_std_tpl_text': self.form.Text.currentText(),
-            'ru_std_tpl_stamp': {
+            'std_tpl_drawing': self.form.Drawing.currentText(),
+            'std_tpl_text': self.form.Text.currentText(),
+            'std_tpl_stamp': {
                 'Designation': self.form.Designation.text(),
                 'Author': self.form.Author.text(),
                 'Inspector': self.form.Inspector.text(),

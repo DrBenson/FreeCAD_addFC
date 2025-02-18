@@ -139,7 +139,7 @@ def compilation(strict: bool = True,
         'User parameter:BaseApp/Preferences/Units').GetInt('Decimals')
 
     index_pt = 'App::PropertyString'  # important, type: string
-    index_exception = ('Add_Section', 'Документация')
+    index_exception = ('Add_Section', FreeCAD.Qt.translate("addFC", 'Documentation'))
 
     group = 'Add_'
 
@@ -515,9 +515,9 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
         if merger == 'Section':  # USDD
             if 'Section' in unit:
                 if unit['Section'] == '-':
-                    unit['Section'] = 'Прочие изделия'
+                    unit['Section'] = FreeCAD.Qt.translate("addFC", 'Other products')
             else:
-                unit['Section'] = 'Прочие изделия'
+                unit['Section'] = FreeCAD.Qt.translate("addFC", 'Other products')
 
         for j in skip:
             if j in unit:
@@ -550,7 +550,7 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
 def export(path: str, target: str, bom) -> str:
 
     if len(bom[0]) == 0:
-        return 'The BOM is empty...'
+        return FreeCAD.Qt.translate("addFC", 'The BOM is empty...')
 
     conf, properties = P.pref_configuration, P.pref_properties
 
@@ -587,7 +587,15 @@ def export(path: str, target: str, bom) -> str:
                     if j in properties:
                         alias = properties[j][3]
                         if use_alias and alias != '':
-                            key = properties[j][3]
+                            if properties[j][0] == 'Type':
+                                key = FreeCAD.Qt.translate('Section', properties[j][3])
+                            else:
+                                key = FreeCAD.Qt.translate('Form', properties[j][3])
+                        else:
+                            if properties[j][0] == 'Type':
+                                key = FreeCAD.Qt.translate('Section', properties[j][0])
+                            else:
+                                key = FreeCAD.Qt.translate('Form', properties[j][0])
                     if key not in headers:
                         headers.append(key)
                     result[i][key] = bom[0][i][j]
@@ -639,7 +647,11 @@ def export(path: str, target: str, bom) -> str:
                             weight_column = alphabet[x]
                         # aliases or abbreviations:
                         if spreadsheet_use_alias and properties[i][3] != '':
-                            i = properties[i][3]
+                            if properties[i][0] == 'Type':
+                                i = FreeCAD.Qt.translate('Section', properties[i][3])
+                            else:
+                                i = FreeCAD.Qt.translate('Form', properties[i][3])
+                        #    i = properties[i][3]
                         else:
                             if i == 'MetalThickness':
                                 i = 'MT'
@@ -726,9 +738,9 @@ def export(path: str, target: str, bom) -> str:
                     if 'Section' in j:
                         section = j['Section']
                         if section == '-':
-                            section = 'Прочие изделия'
+                            section = FreeCAD.Qt.translate("addFC",'Other products')
                     else:
-                        section = 'Прочие изделия'
+                        section = FreeCAD.Qt.translate("addFC",'Other products')
 
                     for k in j:
                         if k in r:
@@ -778,20 +790,20 @@ def export(path: str, target: str, bom) -> str:
 
                 dp, dt = 'TechDraw::DrawPage', 'TechDraw::DrawSVGTemplate'
 
-                tpl = conf['ru_std_tpl_text']
+                tpl = conf['std_tpl_text']
 
                 uno_tpl = os.path.join(path_tpl, tpl)
-                dos_tpl = os.path.join(path_tpl, 'RU_Portrait_A4_T_1a.svg')
+                dos_tpl = os.path.join(path_tpl, 'Portrait_A4_T_1a.svg')
 
                 pages = {'n': 1, 'p': [], 't': [], 'e': {}}
 
                 limit = (29, 61)  # uno, dos
-                if tpl == 'RU_Portrait_A4_T_1_Full.svg':
+                if tpl == 'Portrait_A4_T_1_Full.svg':
                     limit = (25, 57)
 
                 # do you need more pages?
                 if count > limit[0] + limit[1] * 2:
-                    e = 'The allowed number of elements has been exceeded!'
+                    e = FreeCAD.Qt.translate("addFC", 'The allowed number of elements has been exceeded!')
                     Logger.error(e)
 
                 if count > limit[0] + limit[1]:
@@ -871,7 +883,7 @@ def export(path: str, target: str, bom) -> str:
                         x += 1
                         count += 1
 
-                stamp = conf['ru_std_tpl_stamp']
+                stamp = conf['std_tpl_stamp']
                 today = datetime.date.today().strftime('%d.%m.%y')
 
                 fields = {
@@ -911,9 +923,9 @@ def export(path: str, target: str, bom) -> str:
 
             elif target == 'RU std: Spreadsheet':
 
-                s = ad.getObjectsByLabel('RU_addFC_BOM_S')
+                s = ad.getObjectsByLabel('addFC_BOM_S')
                 if len(s) == 0:
-                    s = ad.addObject('Spreadsheet::Sheet', 'addFC_BOM_RU_S')
+                    s = ad.addObject('Spreadsheet::Sheet', 'addFC_BOM_S')
                 else:
                     s = s[0]
                     s.clearAll()
@@ -958,4 +970,4 @@ def export(path: str, target: str, bom) -> str:
 
             ad.recompute()
 
-    return 'Export complete'
+    return FreeCAD.Qt.translate("addFC", 'Export complete')

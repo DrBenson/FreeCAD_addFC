@@ -136,7 +136,7 @@ class AddFCModelControl():
         file = str(FreeCAD.ActiveDocument.getFileName())
         file = file.replace('.FCStd', '.py')
         if not os.path.isfile(file):
-            Other.error('The model control file was not found.')
+            Other.error(FreeCAD.Qt.translate('addFC', 'The model control file was not found.'))
             return
         loader = importlib.machinery.SourceFileLoader('control', file)
         _ = loader.load_module()
@@ -176,7 +176,7 @@ class AddFCModelInfo():
         materials_list = list(P.pref_materials.keys())
 
         if conf['working_directory'] == '':
-            conf['working_directory'] = os.path.expanduser('~/Desktop')
+            conf['working_directory'] = os.path.expanduser(FreeCAD.Qt.translate("Form",'~/Desktop'))
         w.target.setText(
             f"... {os.path.basename(conf['working_directory'])}")
 
@@ -203,11 +203,11 @@ class AddFCModelInfo():
 
         PROHIBIT_EDITING = (
             'MetalThickness'
-            'MT',
+            'Metal Thickness',
             'Name',
             'Price',
             'Quantity',
-            'Qty',
+            'Quantity',
             'Weight',
         )
 
@@ -318,9 +318,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table.setHorizontalHeaderLabels(labels)
@@ -384,9 +384,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table_details.setHorizontalHeaderLabels(labels)
@@ -1153,7 +1153,7 @@ class AddFCProperties():
                 w.checkBoxLT.setEnabled(False)
                 cb_materials.setEnabled(True)
                 return
-            w.comboBoxSMP.setCurrentText('Galvanized')
+            w.comboBoxSMP.setCurrentText(FreeCAD.Qt.translate("addFC", 'Galvanized'))
             w.comboBoxSMP.setEnabled(True)
             w.checkBoxLT.setEnabled(True)
             w.checkBoxLT.setChecked(True)
@@ -1201,7 +1201,7 @@ def stamp_fill(ed: dict) -> dict:
     conf = P.pref_configuration
     today = datetime.date.today().strftime('%d.%m.%y')
     dt = ('Author', 'Inspector', 'Control 1', 'Control 2', 'Approver')
-    stamp = conf['ru_std_tpl_stamp']
+    stamp = conf['std_tpl_stamp']
     for i in stamp:
         if i in ed:
             v = stamp[i]
