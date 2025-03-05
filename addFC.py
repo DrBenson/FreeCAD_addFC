@@ -470,7 +470,7 @@ class AddFCModelInfo():
                     else:
                         choice = difflib.get_close_matches(value, enum, 1, 0)
                         if len(choice) > 0:
-                            v = choice[0]
+                            v = FreeCAD.Qt.translate("Form", choice[0]) # Convert language.
                         else:
                             v = '-'
                     item.setText(v)

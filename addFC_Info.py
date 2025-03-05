@@ -379,6 +379,8 @@ def compilation(strict: bool = True,
                                 except BaseException:
                                     pass
 
+                        enum = FreeCAD.Qt.translate("Form", enum) # Convert language
+
                     # sheet metal part:
                     if p == property_unfold:
                         info[key]['!Body'] = i
@@ -610,10 +612,9 @@ def export(path: str, target: str, bom) -> str:
                     writer = csv.DictWriter(file, fieldnames=headers)
                     writer.writeheader()
                     for i in result:
-                        for j in result[i]:
-                            if type(result[i][j]) is float:
-                                result[i][j] = str(
-                                    result[i][j]).replace('.', ',')
+                        # for j in result[i]:
+                        #    if type(result[i][j]) is float:
+                        #        result[i][j] = str(result[i][j]).replace('.', ',')
                         writer.writerow(result[i])
                     file.close()
 

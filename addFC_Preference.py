@@ -95,7 +95,8 @@ SYSTEM_PROPERTIES = ('!Body', '!Trace')
 AVAILABLE_CHARACTERS = re.compile('[^A-Za-z0-9]')
 
 
-FreeCAD.Gui.addLanguagePath(os.path.join(AFC_PATH, 'repo', 'localization'))
+# FreeCAD.Gui.addLanguagePath(os.path.join(AFC_PATH, 'repo', 'localization'))
+FreeCAD.Gui.addLanguagePath(os.path.join(AFC_PATH, 'repo', 'translations'))
 FreeCAD.Gui.updateLocale()
 
 
