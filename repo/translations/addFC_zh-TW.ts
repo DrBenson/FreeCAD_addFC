@@ -206,7 +206,7 @@
     <message>
         <location filename="../../addFC_Data.py" line="145"/>
         <source>Note</source>
-        <translation>注釋</translation>
+        <translation>備註</translation>
     </message>
     <message>
         <location filename="../../addFC_Data.py" line="148"/>
@@ -1094,7 +1094,7 @@ All models are created in FreeCAD version 0.21.2.</source>
     <message>
         <location filename="../../repo/ui/pref_uProp.ui" line="32"/>
         <source>Name of the property group: «Add»</source>
-        <translation>屬性組名稱: &quot;額外屬性&quot;</translation>
+        <translation>屬性組名稱: &quot;Add&quot;</translation>
     </message>
     <message>
         <location filename="../../repo/ui/pref_uProp.ui" line="52"/>
