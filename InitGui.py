@@ -6,11 +6,16 @@ import addFC_Preference as P
 import FreeCAD
 import os
 
+import addFC_locator
+
+AFC_PATH = os.path.dirname(addFC_locator.__file__)
+FreeCAD.Gui.addLanguagePath(os.path.join(AFC_PATH, 'repo', 'translations'))
+FreeCAD.Gui.updateLocale()
 
 class addFC(FreeCAD.Gui.Workbench):
 
-    MenuText = 'addFC'
-    ToolTip = 'addFC Workbench'
+    MenuText =  FreeCAD.Qt.translate("Workbench", 'addFC')
+    ToolTip =  FreeCAD.Qt.translate("Workbench", 'addFC Workbench')
     Icon = os.path.join(P.AFC_PATH_ICON, 'workbench.svg')
 
     import addFC
@@ -33,8 +38,8 @@ class addFC(FreeCAD.Gui.Workbench):
             'AddFCPipe',
         ]
 
-        self.appendToolbar('addFC', self.list)
-        self.appendMenu('addFC', self.list)
+        self.appendToolbar( FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
+        self.appendMenu( FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
 
         global P
 
@@ -55,7 +60,7 @@ class addFC(FreeCAD.Gui.Workbench):
     def Deactivated(self): return
 
     def ContextMenu(self, recipient):
-        self.appendContextMenu('addFC', self.list)
+        self.appendContextMenu( FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
 
     def GetClassName(self): return 'Gui::PythonWorkbench'
 

@@ -136,7 +136,7 @@ class AddFCModelControl():
         file = str(FreeCAD.ActiveDocument.getFileName())
         file = file.replace('.FCStd', '.py')
         if not os.path.isfile(file):
-            Other.error('The model control file was not found.')
+            Other.error(FreeCAD.Qt.translate('addFC', 'The model control file was not found.'))
             return
         loader = importlib.machinery.SourceFileLoader('control', file)
         _ = loader.load_module()
@@ -176,7 +176,7 @@ class AddFCModelInfo():
         materials_list = list(P.pref_materials.keys())
 
         if conf['working_directory'] == '':
-            conf['working_directory'] = os.path.expanduser('~/Desktop')
+            conf['working_directory'] = os.path.expanduser(FreeCAD.Qt.translate("Form", '~/Desktop'))
         w.target.setText(
             f"... {os.path.basename(conf['working_directory'])}")
 
@@ -318,9 +318,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table.setHorizontalHeaderLabels(labels)
@@ -384,9 +384,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table_details.setHorizontalHeaderLabels(labels)
@@ -470,7 +470,7 @@ class AddFCModelInfo():
                     else:
                         choice = difflib.get_close_matches(value, enum, 1, 0)
                         if len(choice) > 0:
-                            v = choice[0]
+                            v = FreeCAD.Qt.translate("Form", choice[0]) # Convert language.
                         else:
                             v = '-'
                     item.setText(v)
@@ -1201,7 +1201,7 @@ def stamp_fill(ed: dict) -> dict:
     conf = P.pref_configuration
     today = datetime.date.today().strftime('%d.%m.%y')
     dt = ('Author', 'Inspector', 'Control 1', 'Control 2', 'Approver')
-    stamp = conf['ru_std_tpl_stamp']
+    stamp = conf['std_tpl_stamp']
     for i in stamp:
         if i in ed:
             v = stamp[i]
@@ -1231,7 +1231,7 @@ class AddFCInsert():
         ad = FreeCAD.ActiveDocument
         conf = P.pref_configuration
 
-        resources = ['stdRU',]
+        resources = ['std',]
         path_user_tpl = conf.get('drawing_templates_user')
         if path_user_tpl is not None:
             basename = os.path.basename(path_user_tpl)
@@ -1265,7 +1265,7 @@ class AddFCInsert():
                     model.appendRow(QtGui.QStandardItem(i.rstrip('.svg')))
         w.resources.currentTextChanged.connect(fill)
         w.resources.setCurrentText(
-            conf.get('drawing_templates_resource', 'stdRU'))
+            conf.get('drawing_templates_resource', 'std'))
 
         def create() -> None:
             resource = w.resources.currentText()
