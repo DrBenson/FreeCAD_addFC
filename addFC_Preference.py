@@ -40,8 +40,7 @@ try:
         stdout=subprocess.DEVNULL,
     )
     if cp.returncode == 0:
-        # todo: version number
-        pass
+        pass  # todo: version number
     else:
         afc_additions['ffmpeg'][0] = False
         afc_additions['ffmpeg'][2] = 'color: #aa0000'
@@ -95,7 +94,7 @@ SYSTEM_PROPERTIES = ('!Body', '!Trace')
 AVAILABLE_CHARACTERS = re.compile('[^A-Za-z0-9]')
 
 
-FreeCAD.Gui.addLanguagePath(os.path.join(AFC_PATH, 'repo', 'localization'))
+FreeCAD.Gui.addLanguagePath(os.path.join(AFC_PATH, 'repo', 'translations'))
 FreeCAD.Gui.updateLocale()
 
 
@@ -294,7 +293,7 @@ class addFCPreferenceProperties():
             i = QtGui.QTableWidgetItem(key)
             i.setFlags(QtCore.Qt.NoItemFlags)
             table_values.setItem(x, 0, i)
-            if key == 'Material':
+            if key == 'Material' or key == FreeCAD.Qt.translate('Form', 'Material'):
                 i = QtGui.QTableWidgetItem(FreeCAD.Qt.translate("addFC", '... use the materials tab'))
                 i.setFlags(QtCore.Qt.NoItemFlags)
                 table_values.setItem(x, 1, i)
@@ -307,7 +306,7 @@ class addFCPreferenceProperties():
                 table_values.setItem(x, 1, i)
             x += 1
 
-        align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC",'Values')))
+        align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC", 'Values')))
 
         # ------- #
         # actions #
@@ -422,8 +421,8 @@ class addFCPreferenceProperties():
 
         def changed_wrapper(item) -> None:
             check_values(changed(item))
-            align(table_properties, headers_properties.index(FreeCAD.Qt.translate("addFC",'Title')))
-            align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC",'Values')))
+            align(table_properties, headers_properties.index(FreeCAD.Qt.translate("addFC", 'Title')))
+            align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC", 'Values')))
 
         def switch(item) -> None:
             if item is None:
@@ -501,7 +500,7 @@ class addFCPreferenceProperties():
             p_title = table_values.item(row, 0).text()
             if p_title not in properties or table_values.item(row, 1) is None:
                 continue
-            if p_title == 'Material':
+            if p_title == 'Material' or p_title == FreeCAD.Qt.translate('Form', 'Material'):
                 # core, only:
                 properties[p_title][2] = Data.properties_core['Material'][2]
             else:
@@ -905,7 +904,7 @@ PATH_RU_TPL = os.path.join(AFC_PATH, 'repo', 'add', 'stdRU', 'tpl')
 def get_tpl() -> tuple[list, list, dict]:
     drawing, text, tpl = [], [], {}
     dirs = (
-        os.path.join(PATH_RU_TPL, 'ЕСКД'),
+        os.path.join(PATH_RU_TPL, 'en'),
         os.path.join(PATH_RU_TPL, 'СПДС'),
     )
     for d in dirs:
@@ -915,6 +914,15 @@ def get_tpl() -> tuple[list, list, dict]:
                     text.append(i) if '_T_' in i else drawing.append(i)
                     tpl[i] = os.path.join(d, i)
     return drawing, text, tpl
+
+
+def get_user_tpl(path: str) -> dict:
+    tpl = {}
+    if os.path.exists(path):
+        for i in os.listdir(path):
+            if i.endswith('.svg'):
+                tpl[i] = os.path.join(path, i)
+    return tpl
 
 
 class addFCPreferenceOther():
@@ -944,7 +952,18 @@ class addFCPreferenceOther():
         self.form.ffmpeg.setChecked(afc_additions['ffmpeg'][0])
         self.form.ffmpeg.setStyleSheet(afc_additions['ffmpeg'][2])
 
-        stamp = pref_configuration['ru_std_tpl_stamp']
+        # user templates:
+        self.form.utLineEdit.setText(
+            pref_configuration.get('drawing_templates_user', ''))
+
+        def select() -> None:
+            d = os.path.normcase(QtGui.QFileDialog.getExistingDirectory())
+            if d != '':
+                self.form.utLineEdit.setText(d)
+        self.form.utSelect.clicked.connect(select)
+
+        # stdRU:
+        stamp = pref_configuration['std_tpl_stamp']
 
         self.form.Designation.setText(stamp['Designation'])
         self.form.Author.setText(stamp['Author'])
@@ -972,9 +991,9 @@ class addFCPreferenceOther():
         self.form.Text.addItems(text)
 
         self.form.Drawing.setCurrentText(
-            pref_configuration['ru_std_tpl_drawing'])
+            pref_configuration['std_tpl_drawing'])
         self.form.Text.setCurrentText(
-            pref_configuration['ru_std_tpl_text'])
+            pref_configuration['std_tpl_text'])
 
         return
 
@@ -987,6 +1006,7 @@ class addFCPreferenceOther():
                 self.form.fontComboBox.currentText(),
                 self.form.fontSpinBox.value(),
             ],
+            'drawing_templates_user': self.form.utLineEdit.text(),
             'ru_std_tpl_drawing': self.form.Drawing.currentText(),
             'ru_std_tpl_text': self.form.Text.currentText(),
             'ru_std_tpl_stamp': {

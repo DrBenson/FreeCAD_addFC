@@ -136,7 +136,7 @@ class AddFCModelControl():
         file = str(FreeCAD.ActiveDocument.getFileName())
         file = file.replace('.FCStd', '.py')
         if not os.path.isfile(file):
-            Other.error('The model control file was not found.')
+            Other.error(FreeCAD.Qt.translate('addFC', 'The model control file was not found.'))
             return
         loader = importlib.machinery.SourceFileLoader('control', file)
         _ = loader.load_module()
@@ -176,7 +176,7 @@ class AddFCModelInfo():
         materials_list = list(P.pref_materials.keys())
 
         if conf['working_directory'] == '':
-            conf['working_directory'] = os.path.expanduser('~/Desktop')
+            conf['working_directory'] = os.path.expanduser(FreeCAD.Qt.translate("Form", '~/Desktop'))
         w.target.setText(
             f"... {os.path.basename(conf['working_directory'])}")
 
@@ -188,6 +188,8 @@ class AddFCModelInfo():
         w.SVG.setChecked(conf['unfold_svg'])
         w.STP.setChecked(conf['unfold_stp'])
         w.comboBoxExport.setCurrentText(conf['bom_export_type'])
+        w.checkBoxCentering.setChecked(conf['unfold_centering'])
+        w.checkBoxAlongX.setChecked(conf['unfold_along_x'])
         w.comboBoxName.setCurrentText(conf['unfold_file_name'])
         w.comboBoxSignature.setCurrentText(conf['unfold_file_signature'])
         w.lineEditPrefix.setText(conf['unfold_prefix'])
@@ -297,7 +299,7 @@ class AddFCModelInfo():
                         continue
                     if prop[j][0] == 'Float' or prop[j][0] == 'Integer':
                         q = QtGui.QTableWidgetItem()
-                        q.setTextAlignment(QtCore.Qt.AlignHCenter)
+                        q.setTextAlignment(QtCore.Qt.AlignCenter)
                         q.setData(QtCore.Qt.DisplayRole, spec[i][j])
                     else:
                         q = QtGui.QTableWidgetItem()
@@ -316,9 +318,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table.setHorizontalHeaderLabels(labels)
@@ -361,7 +363,7 @@ class AddFCModelInfo():
                     v = str(details[i][j])
                     q = QtGui.QTableWidgetItem(v)
                     if j == 'Unfold':
-                        q.setTextAlignment(QtCore.Qt.AlignHCenter)
+                        q.setTextAlignment(QtCore.Qt.AlignCenter)
                         match v:
                             case 'True': q.setForeground(color_blue)
                             case 'False': q.setForeground(color_red)
@@ -370,7 +372,7 @@ class AddFCModelInfo():
                             q.setForeground(color_red)
                     if prop[j][0] == 'Float' or prop[j][0] == 'Integer':
                         if v != '-':
-                            q.setTextAlignment(QtCore.Qt.AlignHCenter)
+                            q.setTextAlignment(QtCore.Qt.AlignCenter)
                             q.setData(QtCore.Qt.DisplayRole, v)
                     table_details.setItem(x, labels.index(j), q)
                 x += 1
@@ -382,9 +384,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table_details.setHorizontalHeaderLabels(labels)
@@ -409,7 +411,7 @@ class AddFCModelInfo():
                 node_name=get_node_name(),
             )
             structure_update()
-            w.info.setText(FreeCAD.Qt.translate("addFC", 'Updated'))
+            w.info.setText(FreeCAD.Qt.translate('addFC', 'Updated'))
 
         def structure_purge() -> None:
             table.setSortingEnabled(False)
@@ -425,7 +427,7 @@ class AddFCModelInfo():
 
         def structure_purge_wrapper() -> None:
             structure_purge()
-            w.info.setText(FreeCAD.Qt.translate("addFC", 'Cleared'))
+            w.info.setText(FreeCAD.Qt.translate('addFC', 'Cleared'))
 
         structure_update()
         w.info.setText('...')
@@ -468,7 +470,7 @@ class AddFCModelInfo():
                     else:
                         choice = difflib.get_close_matches(value, enum, 1, 0)
                         if len(choice) > 0:
-                            v = choice[0]
+                            v = FreeCAD.Qt.translate("Form", choice[0]) # Convert language.
                         else:
                             v = '-'
                     item.setText(v)
@@ -536,7 +538,8 @@ class AddFCModelInfo():
                 indexing=True,
             )
             structure_update()
-            w.info.setText(FreeCAD.Qt.translate("addFC", 'Elements are indexed'))
+            w.info.setText(FreeCAD.Qt.translate(
+                'addFC', 'Elements are indexed'))
         w.pushButtonIndexing.clicked.connect(indexing)
 
         def update_enumerations() -> None:
@@ -547,7 +550,8 @@ class AddFCModelInfo():
                 update_enumerations=True,
             )
             structure_update()
-            w.info.setText(FreeCAD.Qt.translate("addFC", 'Enumerations updated'))
+            w.info.setText(FreeCAD.Qt.translate(
+                'addFC', 'Enumerations updated'))
         w.pushButtonUEnum.clicked.connect(update_enumerations)
 
         def update_equations() -> None:
@@ -558,7 +562,7 @@ class AddFCModelInfo():
                 update_equations=True,
             )
             structure_update()
-            w.info.setText(FreeCAD.Qt.translate("addFC", 'Equations updated'))
+            w.info.setText(FreeCAD.Qt.translate('addFC', 'Equations updated'))
         w.pushButtonUEq.clicked.connect(update_equations)
 
         def spec_export_settings() -> None:
@@ -725,6 +729,8 @@ class AddFCModelInfo():
             conf['unfold_dxf'] = w.DXF.isChecked()
             conf['unfold_svg'] = w.SVG.isChecked()
             conf['unfold_stp'] = w.STP.isChecked()
+            conf['unfold_centering'] = w.checkBoxCentering.isChecked()
+            conf['unfold_along_x'] = w.checkBoxAlongX.isChecked()
             conf['unfold_file_name'] = w.comboBoxName.currentText()
             conf['unfold_file_signature'] = w.comboBoxSignature.currentText()
             conf['unfold_prefix'] = prefix
@@ -928,7 +934,8 @@ class AddFCProperties():
 
         def add() -> None:
             if len(FreeCAD.Gui.Selection.getSelection()) < 1:
-                w.info.setText(FreeCAD.Qt.translate("addFC", 'You need to select an object'))
+                w.info.setText(FreeCAD.Qt.translate(
+                    'addFC', 'You need to select an object'))
                 return
             w.info.setText('')
 
@@ -1146,7 +1153,7 @@ class AddFCProperties():
                 w.checkBoxLT.setEnabled(False)
                 cb_materials.setEnabled(True)
                 return
-            w.comboBoxSMP.setCurrentText(FreeCAD.Qt.translate("addFC", 'Galvanized'))
+            w.comboBoxSMP.setCurrentText('Galvanized')
             w.comboBoxSMP.setEnabled(True)
             w.checkBoxLT.setEnabled(True)
             w.checkBoxLT.setChecked(True)
@@ -1194,7 +1201,7 @@ def stamp_fill(ed: dict) -> dict:
     conf = P.pref_configuration
     today = datetime.date.today().strftime('%d.%m.%y')
     dt = ('Author', 'Inspector', 'Control 1', 'Control 2', 'Approver')
-    stamp = conf['ru_std_tpl_stamp']
+    stamp = conf['std_tpl_stamp']
     for i in stamp:
         if i in ed:
             v = stamp[i]
@@ -1215,43 +1222,78 @@ class AddFCInsert():
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
-            P.AFC_PATH, 'repo', 'ui', 'list.ui'))
+            P.AFC_PATH, 'repo', 'ui', 'insert.ui'))
 
         if not FreeCAD.ActiveDocument:
             FreeCAD.newDocument('Unnamed')
             FreeCAD.Gui.activeDocument().activeView().viewDefaultOrientation()
 
         ad = FreeCAD.ActiveDocument
+        conf = P.pref_configuration
 
-        _, _, tpl = P.get_tpl()
-        tpl = dict(sorted(tpl.items()))
+        resources = ['std',]
+        path_user_tpl = conf.get('drawing_templates_user')
+        if path_user_tpl is not None:
+            basename = os.path.basename(path_user_tpl)
+            if basename != '':
+                resources.append(basename)
+
+        w.resources.addItems(resources)
+
+        # stdRU templates:
+        _, _, std_tpl = P.get_tpl()
+        std_tpl = dict(sorted(std_tpl.items()))
+
+        # user templates:
+        user_tpl = P.get_user_tpl(path_user_tpl)
+        user_tpl = dict(sorted(user_tpl.items()))
+
+        w.switchTD.setChecked(conf.get('insert_switch', True))
 
         model = QtGui.QStandardItemModel()
         w.listView.setModel(model)
-        for i in tpl.keys():
-            model.appendRow(QtGui.QStandardItem(i.rstrip('.svg')))
 
-        w.label.setText(FreeCAD.Qt.translate("addFC", 'Select a template to create a drawing.'))
-        w.pushButton.setText(FreeCAD.Qt.translate("addFC", 'Create'))
         w.show()
 
+        def fill(target) -> None:
+            model.clear()
+            if target == 'stdRU':
+                for i in std_tpl.keys():
+                    model.appendRow(QtGui.QStandardItem(i.rstrip('.svg')))
+            else:
+                for i in user_tpl.keys():
+                    model.appendRow(QtGui.QStandardItem(i.rstrip('.svg')))
+        w.resources.currentTextChanged.connect(fill)
+        w.resources.setCurrentText(
+            conf.get('drawing_templates_resource', 'std'))
+
         def create() -> None:
+            resource = w.resources.currentText()
+            switch = w.switchTD.isChecked()
             for i in w.listView.selectedIndexes():
                 item = w.listView.model().itemFromIndex(i).text()
                 w.close()
                 p = ad.addObject('TechDraw::DrawPage', 'Page')
                 t = ad.addObject('TechDraw::DrawSVGTemplate', 'Template')
-                t.Template = tpl[item + '.svg']
+                if resource == 'stdRU':
+                    t.Template = std_tpl[item + '.svg']
+                else:
+                    t.Template = user_tpl[item + '.svg']
                 t.EditableTexts = stamp_fill(t.EditableTexts)
                 p.Template = t
                 ad.recompute()
-                # display:
-                FreeCAD.Gui.activateWorkbench('TechDrawWorkbench')
-                p.ViewObject.doubleClicked()
-                FreeCAD.Gui.updateGui()
-                FreeCAD.Gui.SendMsgToActiveView('ViewFit')
+                if switch:
+                    # display:
+                    FreeCAD.Gui.activateWorkbench('TechDrawWorkbench')
+                    p.ViewObject.doubleClicked()
+                    FreeCAD.Gui.updateGui()
+                    FreeCAD.Gui.SendMsgToActiveView('ViewFit')
+            # insert preferences:
+            conf['drawing_templates_resource'] = resource
+            conf['insert_switch'] = switch
+            P.save_pref(P.PATH_CONFIGURATION, conf)
 
-        w.pushButton.clicked.connect(create)
+        w.pushButtonCreate.clicked.connect(create)
         w.listView.doubleClicked.connect(create)
 
     def IsActive(self): return True
@@ -1271,7 +1313,8 @@ EXAMPLES_PATH = os.path.join(P.AFC_PATH, 'repo', 'example')
 examples: dict = {
     'addFC - Additional files': (
         os.path.join(P.AFC_PATH, 'repo', 'add'),
-        'Supporting files such as templates, fonts.',
+        FreeCAD.Qt.translate(
+            'addFC', 'Supporting files such as templates, fonts.'),
     ),
     # documentation:
     'Documentation - English': (
@@ -1319,7 +1362,7 @@ class AddFCAssistant():
                 'MenuText': FreeCAD.Qt.translate(
                     'addFC', 'Help and Example'),
                 'ToolTip': FreeCAD.Qt.translate(
-                    'addFC', 'Help and Example')}
+                    'addFC', 'Help, examples and additional files')}
 
     def Activated(self):
         w = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
@@ -1330,7 +1373,7 @@ class AddFCAssistant():
         for i in examples:
             model.appendRow(QtGui.QStandardItem(i))
 
-        w.pushButton.setText(FreeCAD.Qt.translate("addFC", 'Open'))
+        w.pushButton.setText(FreeCAD.Qt.translate('addFC', 'Open'))
         w.show()
 
         def unzip(reset: bool) -> None:
@@ -1449,3 +1492,28 @@ class AddFCPipe():
 
 
 FreeCAD.Gui.addCommand('AddFCPipe', AddFCPipe())
+
+
+# ----
+
+
+class AddFCSummary():
+
+    def GetResources(self):
+        return {'Pixmap': os.path.join(P.AFC_PATH_ICON, 'summary.svg'),
+                'Accel': 'S',
+                'MenuText': FreeCAD.Qt.translate(
+                    'addFC', 'Summary'),
+                'ToolTip': FreeCAD.Qt.translate(
+                    'addFC', 'Information about selected elements')}
+
+    def Activated(self):
+        f = os.path.join(P.AFC_PATH, 'utils', 'addFC_Summary.py')
+        loader = importlib.machinery.SourceFileLoader('addFC_Summary', f)
+        _ = loader.load_module()
+        return
+
+    def IsActive(self): return True if FreeCAD.ActiveDocument else False
+
+
+FreeCAD.Gui.addCommand('AddFCSummary', AddFCSummary())

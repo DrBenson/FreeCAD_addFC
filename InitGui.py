@@ -8,25 +8,20 @@ import os
 
 import addFC_locator
 
-from FreeCAD import Gui
-
-addFCWBpath = os.path.dirname(addFC_locator.__file__)
-addFCWB_icons_path = os.path.join(addFCWBpath, "Resources", "icons")
-
-# add translations path
-LanguagePath = os.path.join(addFCWBpath, "Resources", "translations")
-Gui.addLanguagePath(LanguagePath)
-Gui.updateLocale()
+AFC_PATH = os.path.dirname(addFC_locator.__file__)
+FreeCAD.Gui.addLanguagePath(os.path.join(AFC_PATH, 'repo', 'translations'))
+FreeCAD.Gui.updateLocale()
 
 class addFC(FreeCAD.Gui.Workbench):
 
-    MenuText = FreeCAD.Qt.translate("Workbench", 'addFC')
-    ToolTip = FreeCAD.Qt.translate("Workbench", 'addFC Workbench')
+    MenuText =  FreeCAD.Qt.translate("Workbench", 'addFC')
+    ToolTip =  FreeCAD.Qt.translate("Workbench", 'addFC Workbench')
     Icon = os.path.join(P.AFC_PATH_ICON, 'workbench.svg')
 
     import addFC
 
     def Initialize(self):
+
         self.list = [
             # core:
             'AddFCOpenRecentFile',
@@ -38,12 +33,13 @@ class addFC(FreeCAD.Gui.Workbench):
             'AddFCAssistant',
             # utils:
             'AddFCLibrary',
+            'AddFCSummary',
             'AddFCExplode',
             'AddFCPipe',
         ]
 
-        self.appendToolbar(FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
-        self.appendMenu(FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
+        self.appendToolbar( FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
+        self.appendMenu( FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
 
         global P
 
@@ -64,7 +60,7 @@ class addFC(FreeCAD.Gui.Workbench):
     def Deactivated(self): return
 
     def ContextMenu(self, recipient):
-        self.appendContextMenu(FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
+        self.appendContextMenu( FreeCAD.Qt.translate("Workbench", 'addFC'), self.list)
 
     def GetClassName(self): return 'Gui::PythonWorkbench'
 

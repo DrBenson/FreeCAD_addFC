@@ -12,8 +12,6 @@ import json
 import os
 
 
-ROUNDING = 2  # todo: ask user
-
 BASE_ENUMERATION = tuple(['',] + [str(i).rjust(3, '0') for i in range(1, 51)])
 
 
@@ -76,6 +74,8 @@ def weight_equation(obj, material: list) -> None:
         if u in obj.PropertiesList:
             if obj.getPropertyByName(u) == '-':
                 obj.setExpression(w, f'{v} * {material[1]} * {q} / 10 ^ 9')
+        else:
+            obj.setExpression(w, f'{v} * {material[1]} * {q} / 10 ^ 9')
     else:
         obj.setExpression(w, f'{v} * {material[1]} / 10 ^ 9')
 
@@ -124,6 +124,9 @@ def get_doc_name(dn: str) -> str:
 # ------------------------------------------------------------------------------
 
 
+rounding = 2
+
+
 def compilation(strict: bool = True,
                 node_name: str = '',
                 indexing: bool = False,
@@ -131,8 +134,12 @@ def compilation(strict: bool = True,
                 update_equations: bool = False,
                 ) -> tuple[dict, dict, dict, dict, dict]:
 
+    global rounding
+    rounding = FreeCAD.ParamGet(
+        'User parameter:BaseApp/Preferences/Units').GetInt('Decimals')
+
     index_pt = 'App::PropertyString'  # important, type: string
-    index_exception = ('Add_Section', FreeCAD.Qt.translate("addFC",'Документация'))
+    index_exception = ('Add_Section', FreeCAD.Qt.translate("addFC", 'Documentation'))
 
     group = 'Add_'
 
@@ -185,8 +192,10 @@ def compilation(strict: bool = True,
 
     def visibility_full(inList: list) -> bool:
         for i in inList:
-            if i.TypeId != 'App::Link' and not i.Visibility:
-                return False
+            if not i.Visibility:
+                match i.TypeId:
+                    case 'App::Link' | 'PartDesign::SubShapeBinder': pass
+                    case _: return False
         return True
 
     for i in FreeCAD.ActiveDocument.findObjects():
@@ -204,6 +213,9 @@ def compilation(strict: bool = True,
                         if 'Count' in i.PropertiesList:
                             # array:
                             analysis(i.Base.getLinkedObject(), i.Count, dn)
+                        else:
+                            # single element:
+                            analysis(i, doc=dn)
                     else:
                         analysis(i, doc=dn)
                 case 'TechDraw::DrawPage':
@@ -437,7 +449,7 @@ def compilation(strict: bool = True,
             if type(value) is float:
                 if addition(j):
                     info_headers[j] += value
-                value = round(value, ROUNDING)
+                value = round(value, rounding)
                 info[i][j] = int(value) if value.is_integer() else value
             elif type(value) is int:
                 if addition(j):
@@ -458,7 +470,7 @@ def compilation(strict: bool = True,
         for j in i:
             value = i[j]
             if type(value) is float:
-                value = round(value, ROUNDING)
+                value = round(value, rounding)
                 i[j] = int(value) if value.is_integer() else value
 
     info_headers = dict(sorted(info_headers.items()))
@@ -469,6 +481,13 @@ def compilation(strict: bool = True,
 
 # ------------------------------------------------------------------------------
 
+
+UNIT_CONVERSION = {
+    'm^3': 1000000000,
+    'm^2': 1000000,
+    'm': 1000,
+    'kg': 1,
+}
 
 UNIT_RU = {
     '-': '',
@@ -501,9 +520,9 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
         if merger == 'Section':  # USDD
             if 'Section' in unit:
                 if unit['Section'] == '-':
-                    unit['Section'] = FreeCAD.Qt.translate("addFC",'Прочие изделия')
+                    unit['Section'] = FreeCAD.Qt.translate("addFC", 'Other products')
             else:
-                unit['Section'] = FreeCAD.Qt.translate("addFC",'Прочие изделия')
+                unit['Section'] = FreeCAD.Qt.translate("addFC", 'Other products')
 
         for j in skip:
             if j in unit:
@@ -573,6 +592,16 @@ def export(path: str, target: str, bom) -> str:
                     if j in properties:
                         alias = properties[j][3]
                         if use_alias and alias != '':
+                            if properties[j][0] == 'Type':
+                                key = FreeCAD.Qt.translate('Section', properties[j][3])
+                            else:
+                                key = FreeCAD.Qt.translate('Form', properties[j][3])
+                        else:
+                            if properties[j][0] == 'Type':
+                                key = FreeCAD.Qt.translate('Section', properties[j][0])
+                            else:
+                                key = FreeCAD.Qt.translate('Form', properties[j][0])
+                        if use_alias and alias != '':
                             key = properties[j][3]
                     if key not in headers:
                         headers.append(key)
@@ -610,19 +639,30 @@ def export(path: str, target: str, bom) -> str:
 
             columns, columns_width = {}, {}
 
+            quantity_column, weight_column = '', ''
+
             x = -1
             for i in bom[1]:
                 if i not in skip:
                     x += 1
                     columns[i] = alphabet[x]
                     if i in properties:
+                        # special columns:
+                        if i == 'Quantity':
+                            quantity_column = alphabet[x]
+                        elif i == 'Weight':
+                            weight_column = alphabet[x]
+                        # aliases or abbreviations:
                         if spreadsheet_use_alias and properties[i][3] != '':
-                            i = properties[i][3]
+                            if properties[i][0] == 'Type':
+                                i = FreeCAD.Qt.translate('Section', properties[i][3])
+                            else:
+                                i = FreeCAD.Qt.translate('Form', properties[i][3])
                         else:
                             if i == 'MetalThickness':
                                 i = 'Metal Thickness'
-                            if i == 'Quantity':
-                                i = 'Qty'
+                            elif i == 'Quantity':
+                                i = 'Quantity'
                     s.set(f'{alphabet[x]}{1}', i)
                     columns_width[alphabet[x]] = [0, True]  # width, empty
 
@@ -636,12 +676,38 @@ def export(path: str, target: str, bom) -> str:
                     for k in j:
                         if k in columns:
                             value = str(j[k])
-                            w = max(columns_width[columns[k]][0], len(value))
-                            columns_width[columns[k]][0] = w
+                            if columns[k] == quantity_column:
+                                value_len = len(value) + rounding + 4
+                            elif columns[k] == weight_column:
+                                value_len = len(value) + rounding + 2
+                            else:
+                                value_len = len(value)
+                            cw = max(columns_width[columns[k]][0], value_len)
+                            columns_width[columns[k]][0] = cw
                             if value != '-':
                                 columns_width[columns[k]][1] = False
                             cell = f'{columns[k]}{y}'
-                            s.set(cell, value)
+                            # check unit conversion:
+                            value_conv = None
+                            if columns[k] == quantity_column:
+                                sp = value.split(' ')
+                                if len(sp) == 2:
+                                    if sp[1] != '-':
+                                        try:
+                                            conv = UNIT_CONVERSION[sp[1]]
+                                            v = float(sp[0]) * conv
+                                            value_conv = (str(v), sp[1])
+                                        except ValueError:
+                                            pass
+                            elif columns[k] == weight_column:
+                                s.setDisplayUnit(cell, 'kg')  # standard
+                            # value entry:
+                            if value_conv is None:
+                                s.set(cell, value)
+                            else:
+                                s.set(cell, value_conv[0])
+                                s.setDisplayUnit(cell, value_conv[1])
+                                s.setAlignment(cell, center)
                             # style:
                             match j[k]:
                                 case int() | float():
@@ -678,9 +744,9 @@ def export(path: str, target: str, bom) -> str:
                     if 'Section' in j:
                         section = j['Section']
                         if section == '-':
-                            section = FreeCAD.Qt.translate("addFC",'Прочие изделия')
+                            section = FreeCAD.Qt.translate("addFC",'Other products')
                     else:
-                        section = FreeCAD.Qt.translate("addFC",'Прочие изделия')
+                        section = FreeCAD.Qt.translate("addFC",'Other products')
 
                     for k in j:
                         if k in r:
@@ -688,7 +754,11 @@ def export(path: str, target: str, bom) -> str:
                             if v == '-':
                                 continue
                             if k == 'Quantity':
-                                v = v.replace('.', ',')
+                                sp = v.split(' ')
+                                if len(sp) == 2:
+                                    v = sp[0].replace('.', ',')
+                                else:
+                                    v = v.replace('.', ',')
                             r[k] = v
 
                     # empty note is replaced by unit of measurement:
@@ -726,7 +796,7 @@ def export(path: str, target: str, bom) -> str:
 
                 dp, dt = 'TechDraw::DrawPage', 'TechDraw::DrawSVGTemplate'
 
-                tpl = conf['ru_std_tpl_text']
+                tpl = conf['std_tpl_text']
 
                 uno_tpl = os.path.join(path_tpl, tpl)
                 dos_tpl = os.path.join(path_tpl, 'RU_Portrait_A4_T_1a.svg')
@@ -859,9 +929,9 @@ def export(path: str, target: str, bom) -> str:
 
             elif target == 'RU std: Spreadsheet':
 
-                s = ad.getObjectsByLabel('RU_addFC_BOM_S')
+                s = ad.getObjectsByLabel('addFC_BOM_S')
                 if len(s) == 0:
-                    s = ad.addObject('Spreadsheet::Sheet', 'addFC_BOM_RU_S')
+                    s = ad.addObject('Spreadsheet::Sheet', 'addFC_BOM_S')
                 else:
                     s = s[0]
                     s.clearAll()

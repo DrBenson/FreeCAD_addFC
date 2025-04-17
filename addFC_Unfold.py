@@ -8,18 +8,13 @@ import FreeCAD
 import importDXF
 import ImportGui
 import importSVG
-import math
+import json
 import os
 import Part
 import re
 import shutil
 import time
 
-
-if P.afc_additions['sm'][0]:
-    from SheetMetalUnfoldCmd import SMUnfoldUnattendedCommandClass as u
-else:
-    u = None
 
 if P.afc_additions['ezdxf'][0]:
     import ezdxf.filemanagement
@@ -28,36 +23,48 @@ else:
 
 
 REPRODUCTION = 'Reproduction'
-UNFOLD_SKETCH = 'Unfold_Sketch'
-VERIFICATION_SKETCH = 'Unfold_Sketch_Outline'
-UNFOLD_OBJECT = 'Unfold'
 
-GARBAGE = (
-    # case sensitive!
-    REPRODUCTION,
-    UNFOLD_SKETCH,
-    VERIFICATION_SKETCH,
-    'Unfold_Sketch_bends',
-    'Unfold_Sketch_Internal',
-    UNFOLD_OBJECT,  # the object must be the last
-)
+UNFOLD_OBJECT = 'Unfold'
+UNFOLD_SKETCH = 'Unfold_Sketch'
 
 FORBIDDEN = re.escape('<>:"?*/|\\')
 
 
-def add_signature(file, sign: str, width: float, size: int) -> None:
+def dxf_postprocessor(file, sign: str, bb) -> None:
     if ezdxf is None:
         return
     file = ezdxf.filemanagement.readfile(file)
+
+    # cleaning:
+    file.layers.remove('none')
+    file.layers.remove('Defpoints')
+    if sign == '':
+        file.save()
+        return
+
+    # signing:
     model = file.modelspace()
-    x = -width / 2 + size / 2
-    y = -size / 2
-    model.add_text(sign, height=size).set_placement((x, y))
+    x, y = bb.XLength, bb.YLength
+
+    size = int(abs(x) / len(sign))
+    size = max(2, min(size, 200))
+    size_verify = int(abs(y) - 10)
+    if size > size_verify:
+        size = size_verify
+
+    sign_width = len(sign) * (size / 100 * 87)  # theoretical width...
+
+    x = int(bb.Center.x - sign_width / 2)
+    y = int(bb.Center.y - size / 2)
+
+    model.add_text(sign,
+                   height=size,
+                   dxfattribs={'layer': 'Text'}).set_placement((x, y))
     file.save()
 
 
-def cleaning(skip: str) -> None:
-    for i in GARBAGE:
+def cleaning(garbage: tuple, skip: str = '') -> None:
+    for i in garbage:
         if i != skip:
             try:
                 FreeCAD.ActiveDocument.removeObject(i)
@@ -65,16 +72,63 @@ def cleaning(skip: str) -> None:
                 pass
 
 
-def unfold(w, details: dict, path: str, skip: list = []) -> None:
+def unfold(w, parts: dict, path: str, skip: list = []) -> None:
+
+    if len(parts) == 0 or len(parts) == len(skip):
+        w.progress.setValue(100)
+        w.status.setText(FreeCAD.Qt.translate("addFC", 'No sheet metal parts'))
+        return
+
     # checking the functionality:
     if not P.afc_additions['sm'][0]:
         w.error.setText(FreeCAD.Qt.translate("addFC", 'Warning: SheetMetal Workbench is not available!'))
         return
-
-    if len(details) == 0 or len(details) == len(skip):
-        w.progress.setValue(100)
-        w.status.setText(FreeCAD.Qt.translate("addFC", 'No sheet metal parts'))
+    try:
+        from SheetMetalUnfoldCmd import SMUnfoldUnattendedCommandClass as u
+    except ImportError as error:
+        P.afc_additions['sm'] = [False, '', 'color: #aa0000']
+        Logger.error(error)
         return
+
+    # unfolder, version check:
+    if P.FC_VERSION[0] == '0' and int(P.FC_VERSION[1]) < 21:
+        new_unfolder = False
+    else:
+        if FreeCAD.ParamGet(
+                'User parameter:BaseApp/Preferences/Mod/SheetMetal').GetBool(
+                'UseOldUnfolder'):
+            new_unfolder = False
+        else:
+            new_unfolder = True
+
+    # required values:
+    if new_unfolder:
+        sketch_verification = UNFOLD_SKETCH
+        garbage = (
+            # case sensitive!
+            REPRODUCTION,
+            sketch_verification,
+            'Unfold_Sketch_Bends',
+            'Unfold_Sketch_Holes',
+            'Unfold_Sketch_Internal',
+            UNFOLD_OBJECT,  # the object must be the last
+        )
+    else:
+        sketch_verification = 'Unfold_Sketch_Outline'
+        garbage = (
+            # case sensitive!
+            REPRODUCTION,
+            UNFOLD_SKETCH,
+            'Unfold_Sketch_Bends', 'Unfold_Sketch_bends',
+            'Unfold_Sketch_Internal',
+            sketch_verification,
+            UNFOLD_OBJECT,  # the object must be the last
+        )
+
+    centering = w.checkBoxCentering.isChecked()
+    along_x = w.checkBoxAlongX.isChecked()
+
+    TURN = FreeCAD.Rotation(FreeCAD.Vector(0.0, 0.0, 1.0), 90.0)
 
     steel = P.pref_steel
 
@@ -96,35 +150,41 @@ def unfold(w, details: dict, path: str, skip: list = []) -> None:
         if 'Prefix' in w.comboBoxSignature.currentText():
             signature[1] = str(w.lineEditPrefix.text()).strip()
 
-    ad, zero = FreeCAD.ActiveDocument, FreeCAD.Placement()
+    ZERO = FreeCAD.Placement()
+
+    doc = FreeCAD.newDocument(label='Unfold')
+    getattr(w, "raise")()
+
+    report = {'Parts': {}, 'Materials': {}}
 
     progress_value = 0
-    progress_step = int(100 / (len(details) - len(skip)))
+    progress_step = int(100 / (len(parts) - len(skip)))
 
     start = time.time()
     w.progress.setValue(progress_value)
     FreeCAD.Gui.updateGui()
 
-    for d in details:
+    for p in parts:
 
-        if d in skip:
+        if p in skip:
             continue
+        spec = parts[p]
 
-        w.status.setText(f'Processing: {d}')
+        w.status.setText(f'Processing: {p}')
         FreeCAD.Gui.updateGui()
 
         try:
-            thickness = float(details[d]['MetalThickness'])
+            thickness = float(spec['MetalThickness'])
         except BaseException:
-            Logger.error(f"'{d}' incorrect metal thickness, skip")
+            Logger.error(f"'{p}' incorrect metal thickness, skip")
             continue
 
         try:
-            material = details[d]['Material']
+            material = spec['Material']
         except BaseException:
             material = 'Galvanized'  # default
             Logger.warning(
-                f"'{d}' incorrect material, replaced by 'Galvanized'")
+                f"'{p}' incorrect material, replaced by 'Galvanized'")
 
         if 'stainless' in material.lower() or 'aisi' in material.lower():
             variant = 'Stainless'
@@ -141,10 +201,10 @@ def unfold(w, details: dict, path: str, skip: list = []) -> None:
 
         # reproduction:
         shape = Part.getShape(
-            details[d]['!Body'], '', needSubElement=False, refine=False)
-        body = ad.addObject('Part::Feature', REPRODUCTION)
+            spec['!Body'], '', needSubElement=False, refine=False)
+        body = doc.addObject('Part::Feature', REPRODUCTION)
         body.Shape = shape
-        body.Placement = zero
+        body.Placement = ZERO
         body.recompute(True)
 
         # find the largest face:
@@ -169,87 +229,103 @@ def unfold(w, details: dict, path: str, skip: list = []) -> None:
 
         # selection:
         face = 'Face' + str(target[1])  # base
-        FreeCAD.Gui.Selection.addSelection(ad.Name, body.Name, face, 0, 0, 0)
+        FreeCAD.Gui.Selection.addSelection(doc.Name, body.Name, face, 0, 0, 0)
 
         # unfold:
-        Logger.unfold(f'{d}: {material} ({thickness}) {k_factor}')
-        if u is not None:
-            u.Activated(None)
+        Logger.unfold(f'{p}: {material} ({thickness}) {k_factor}')
+        u.Activated(None)
         FreeCAD.Gui.Selection.clearSelection()
 
         # unfold, parameters:
-        unfold_obj = ad.getObject(UNFOLD_OBJECT)
-        unfold_obj.GenerateSketch = True
-        unfold_obj.KFactor = k_factor
-        unfold_obj.KFactorStandard = 'ansi'
-        unfold_obj.SeparateSketchLayers = True
-        unfold_obj.ManualRecompute = False
+        unfold_obj = doc.getObject(UNFOLD_OBJECT)
+
+        if not unfold_obj.GenerateSketch:
+            unfold_obj.GenerateSketch = True
+        if not unfold_obj.SeparateSketchLayers:
+            unfold_obj.SeparateSketchLayers = True
+        if not unfold_obj.ManualRecompute:
+            unfold_obj.ManualRecompute = False
+
+        if unfold_obj.KFactorStandard != 'aisi':
+            unfold_obj.KFactorStandard = 'ansi'
+        if unfold_obj.KFactor != k_factor:
+            unfold_obj.KFactor = k_factor
+
         unfold_obj.recompute(True)
 
         # correctness check:
-        if ad.getObject(VERIFICATION_SKETCH) is None:
+        if doc.getObject(sketch_verification) is None:
+            # todo: how to check 'new_unfolder' correctly?
             Logger.warning(FreeCAD.Qt.translate("addFC", "wrong, let's try a spare face..."))
-            cleaning(REPRODUCTION)
+            cleaning(garbage, REPRODUCTION)
             # switching to spare:
             face = 'Face' + str(target[2])
             FreeCAD.Gui.Selection.addSelection(
-                ad.Name, body.Name, face, 0, 0, 0)
+                doc.Name, body.Name, face, 0, 0, 0)
             if u is not None:
                 u.Activated(None)
             FreeCAD.Gui.Selection.clearSelection()
             # verify:
-            if ad.getObject(VERIFICATION_SKETCH) is None:
-                cleaning('')
-                Logger.error(f"'{d}' unfold error... skip")
+            if doc.getObject(sketch_verification) is None:
+                cleaning(garbage)
+                Logger.error(f"'{p}' unfold error... skip")
                 continue
 
-        us = ad.getObject(UNFOLD_SKETCH)
-        bb = us.Shape.BoundBox
+        us = doc.getObject(UNFOLD_SKETCH)
+        if us is None:
+            cleaning(garbage)
+            Logger.error(f"'{p}' unfold error... skip")
+            continue
+        us.recompute(True)
 
-        # location along the Y axis:
-        if bb.XLength < bb.YLength:
-            unfold_width = math.ceil(bb.YLength)
-            unfold_height = math.ceil(bb.XLength)
-            # centering:
-            x = bb.Center.y
-            y = bb.Center.x
-            y = abs(y) if y < 0 else -y
-            # change position:
-            r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 90.00)
-            p = FreeCAD.Placement(FreeCAD.Vector(x, y, 0.00), r)
-            try:
-                us.Placement = p
-            except BaseException:
-                pass
-        else:
-            unfold_width = math.ceil(bb.XLength)
-            unfold_height = math.ceil(bb.YLength)
-            # centering:
-            x = bb.Center.x
-            x = abs(x) if x < 0 else -x
-            y = bb.Center.y
-            y = abs(y) if y < 0 else -y
-            # change position:
-            r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-            p = FreeCAD.Placement(FreeCAD.Vector(x, y, 0.00), r)
-            try:
-                us.Placement = p
-            except BaseException:
-                pass
+        sketches = [us]
+        if new_unfolder:
+            for sketch in ('Unfold_Sketch_Holes', 'Unfold_Sketch_Internal'):
+                obj = doc.getObject(sketch)
+                if obj is not None:
+                    obj.recompute(True)
+                    if obj.Placement.Rotation.Angle == 0:
+                        sketches[0].Geometry += obj.Geometry
+                        sketches[0].recompute(True)
+                    else:
+                        along_x = False  # turning is prohibited
+                        sketches.append(obj)
+
+        bb = sketches[0].Shape.BoundBox
+
+        if along_x and bb.XLength < bb.YLength:
+            # position along the X axis:
+            for sketch in sketches:
+                sketch.Placement.Rotation = TURN
+                sketch.recompute(True)
+            bb = sketches[0].Shape.BoundBox
+
+        x = bb.Center.x if centering else bb.XMin
+        x = abs(x) if x < 0 else -x
+        y = bb.Center.y if centering else bb.YMin
+        y = abs(y) if y < 0 else -y
+        if round(x, 6) != 0 or round(y, 6) != 0:
+            for sketch in sketches:
+                sketch.Placement.Base.x = x
+                sketch.Placement.Base.y = y
+                sketch.Placement.Base.z = 0
+                sketch.recompute(True)
+
+        bb = sketches[0].Shape.BoundBox
 
         # directory:
         target = os.path.join(path, f'{material} ({thickness})')
         if not os.path.exists(target):
             os.makedirs(target)
 
-        file = re.sub(FORBIDDEN, '_', d)
+        file = re.sub(FORBIDDEN, '_', p)
 
         code, index, sign = '', '', signature[1]  # prefix
 
-        if 'Code' in details[d] and details[d]['Code'] != '':
-            code = re.sub(FORBIDDEN, '_', details[d]['Code'])
-        if 'Index' in details[d] and details[d]['Index'] != '':
-            index = re.sub(FORBIDDEN, '_', details[d]['Index'])
+        if 'Code' in spec and spec['Code'] != '':
+            code = re.sub(FORBIDDEN, '_', spec['Code'])
+        if 'Index' in spec and spec['Index'] != '':
+            index = re.sub(FORBIDDEN, '_', spec['Index'])
 
         match w.comboBoxName.currentText():
             case 'Code':
@@ -274,40 +350,61 @@ def unfold(w, details: dict, path: str, skip: list = []) -> None:
                     if code != '':
                         sign = f'{signature[1]}_{code}'
 
-        # checking empty signature:
-        if sign == '':
-            signature[0] = False
+        quantity = int(spec['Quantity'])
 
         # save:
-        for i in range(int(details[d]['Quantity'])):
+        for i in range(quantity):
             if save_dxf:
                 f = os.path.join(target, f'{file} ({i + 1}).dxf')
-                importDXF.export([us], f)
-                # signature:
-                if signature[0] and len(sign) > 0:
-                    size = int(abs(unfold_width) / len(sign))
-                    size = max(6, min(size, 120))
-                    size_verify = int(abs(unfold_height) - 10)
-                    if size > size_verify:
-                        size = size_verify
-                    if P.afc_additions['ezdxf'][0]:
-                        add_signature(f, sign, unfold_width, size)
+                importDXF.export(sketches, f)
+                # postprocessor:
+                if P.afc_additions['ezdxf'][0]:
+                    dxf_postprocessor(f, sign, bb)
             if save_svg:
                 f = os.path.join(target, f'{file} ({i + 1}).svg')
-                importSVG.export([us], f)
+                importSVG.export(sketches, f)
             if save_stp:
                 f = os.path.join(target, f'{file} ({i + 1}).step')
                 ImportGui.export([body], f)
 
-        cleaning('')
-        Logger.log('...done')
+        cleaning(garbage)
+        Logger.log(FreeCAD.Qt.translate("addFC", '...done'))
+
+        part_area = round(body.Shape.Volume / 1000000 / thickness, 4)  # m^2
+
+        report['Parts'][p] = {
+            'Area': part_area,
+            'Code': spec.get('Code', ''),
+            'Dimensions': (round(bb.XLength), round(bb.YLength)),
+            'Material': material,
+            'Quantity': quantity,
+            'Weight': spec.get('Weight', 0),
+        }
+
+        if 'Id' in spec:
+            report['Parts'][p]['Id'] = spec['Id']
+
+        if material in report['Materials']:
+            report['Materials'][material] += part_area * quantity
+        else:
+            report['Materials'][material] = part_area * quantity
 
         progress_value += progress_step
         w.progress.setValue(progress_value)
         FreeCAD.Gui.updateGui()
 
-    w.progress.setValue(100)
+    doc.clearDocument()
+    FreeCAD.closeDocument(doc.Name)
+    getattr(w, "raise")()
 
+    for i in report['Materials']:
+        report['Materials'][i] = round(report['Materials'][i], 4)
+
+    file = open(os.path.join(path, 'report.json'), 'w+', encoding='utf-8')
+    json.dump(report, file, ensure_ascii=False, indent=4)
+    file.close()
+
+    w.progress.setValue(100)
     stop = time.strftime('%M:%S', time.gmtime(time.time() - start))
     w.status.setText(f'Unfold completed, time - {stop}')
 
