@@ -215,8 +215,8 @@ class addFCPreferenceProperties():
         self.form = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
             AFC_PATH, 'repo', 'ui', 'pref_uProp.ui'))
 
-        headers_properties = ('Title', 'Type', 'Addition', 'Alias')
-        headers_values = ('Property', 'Values')
+        headers_properties = (FreeCAD.Qt.translate("addFC",'Title'),  FreeCAD.Qt.translate("addFC", 'Type'), FreeCAD.Qt.translate("addFC", 'Addition'), FreeCAD.Qt.translate("addFC", 'Alias'))
+        headers_values = (FreeCAD.Qt.translate("addFC",'Property'), FreeCAD.Qt.translate("addFC",'Values'))
 
         color_black = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         color_blue = QtGui.QBrush(QtGui.QColor(0, 0, 150))
@@ -278,7 +278,7 @@ class addFCPreferenceProperties():
             #
             x += 1
 
-        align(table_properties, headers_properties.index('Title'))
+        align(table_properties, headers_properties.index(FreeCAD.Qt.translate("addFC",'Title')))
 
         # ------ #
         # values #
@@ -293,8 +293,8 @@ class addFCPreferenceProperties():
             i = QtGui.QTableWidgetItem(key)
             i.setFlags(QtCore.Qt.NoItemFlags)
             table_values.setItem(x, 0, i)
-            if key == 'Material':
-                i = QtGui.QTableWidgetItem('... use the materials tab')
+            if key == 'Material' or key == FreeCAD.Qt.translate('Form', 'Material'):
+                i = QtGui.QTableWidgetItem(FreeCAD.Qt.translate("addFC", '... use the materials tab'))
                 i.setFlags(QtCore.Qt.NoItemFlags)
                 table_values.setItem(x, 1, i)
             elif key == 'Unit':
@@ -306,7 +306,7 @@ class addFCPreferenceProperties():
                 table_values.setItem(x, 1, i)
             x += 1
 
-        align(table_values, headers_values.index('Values'))
+        align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC", 'Values')))
 
         # ------- #
         # actions #
@@ -421,8 +421,8 @@ class addFCPreferenceProperties():
 
         def changed_wrapper(item) -> None:
             check_values(changed(item))
-            align(table_properties, headers_properties.index('Title'))
-            align(table_values, headers_values.index('Values'))
+            align(table_properties, headers_properties.index(FreeCAD.Qt.translate("addFC", 'Title')))
+            align(table_values, headers_values.index(FreeCAD.Qt.translate("addFC", 'Values')))
 
         def switch(item) -> None:
             if item is None:
@@ -523,7 +523,7 @@ class addFCPreferenceMaterials():
         self.form = FreeCAD.Gui.PySideUic.loadUi(os.path.join(
             AFC_PATH, 'repo', 'ui', 'pref_materials.ui'))
 
-        headers = ('Title', 'Category', 'Density', 'Unit', 'Price per unit')
+        headers = (FreeCAD.Qt.translate("addFC",'Title'), FreeCAD.Qt.translate("addFC", 'Category'), FreeCAD.Qt.translate("addFC", 'Density'), FreeCAD.Qt.translate("addFC", 'Unit'), FreeCAD.Qt.translate("addFC", 'Price per unit'))
 
         table = self.form.tableMaterials
         units = Data.properties_core['Unit'][2]  # standard
@@ -687,7 +687,7 @@ class addFCPreferenceMaterials():
         def changed_wrapper(item) -> None:
             changed(item)
             set_default_material()
-            align(table, headers.index('Title'))
+            align(table, headers.index(FreeCAD.Qt.translate("addFC",'Title')))
 
         self.form.tableMaterials.itemChanged.connect(changed_wrapper)
 
@@ -764,7 +764,7 @@ class addFCPreferenceSM():
         table_galvanized = self.form.tableGalvanized
         table_stainless = self.form.tableStainless
 
-        headers = ('Thickness', 'Radius', 'K-Factor')
+        headers = (FreeCAD.Qt.translate("addFC", 'Thickness'), FreeCAD.Qt.translate("addFC", 'Radius'), FreeCAD.Qt.translate("addFC", 'K-Factor'))
 
         def align(t) -> None:
             t.resizeColumnsToContents()

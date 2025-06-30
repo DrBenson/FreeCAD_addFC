@@ -78,12 +78,12 @@ def unfold(w, parts: dict, path: str, skip: list = []) -> None:
 
     if len(parts) == 0 or len(parts) == len(skip):
         w.progress.setValue(100)
-        w.status.setText('No sheet metal parts')
+        w.status.setText(FreeCAD.Qt.translate("addFC", 'No sheet metal parts'))
         return
 
     # checking the functionality:
     if not P.afc_additions['sm'][0]:
-        w.error.setText('Warning: SheetMetal Workbench is not available!')
+        w.error.setText(FreeCAD.Qt.translate("addFC", 'Warning: SheetMetal Workbench is not available!'))
         return
     try:
         from SheetMetalUnfoldCmd import SMUnfoldUnattendedCommandClass as u
@@ -239,7 +239,7 @@ def unfold(w, parts: dict, path: str, skip: list = []) -> None:
         # correctness check:
         if doc.getObject(sketch_verification) is None:
             # todo: how to check 'new_unfolder' correctly?
-            Logger.warning("wrong, let's try a spare face...")
+            Logger.warning(FreeCAD.Qt.translate("addFC", "wrong, let's try a spare face..."))
             cleaning(doc, REPRODUCTION)
             # switching to spare:
             face = 'Face' + str(target[2])

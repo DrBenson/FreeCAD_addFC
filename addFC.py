@@ -138,7 +138,7 @@ class AddFCModelControl():
         file = str(FreeCAD.ActiveDocument.getFileName())
         file = file.replace('.FCStd', '.py')
         if not os.path.isfile(file):
-            Other.error('The model control file was not found.')
+            Other.error(FreeCAD.Qt.translate('addFC', 'The model control file was not found.'))
             return
         loader = importlib.machinery.SourceFileLoader('control', file)
         _ = loader.load_module()
@@ -179,7 +179,7 @@ class AddFCModelInfo():
         materials_list = list(P.pref_materials.keys())
 
         if conf['working_directory'] == '':
-            conf['working_directory'] = os.path.expanduser('~/Desktop')
+            conf['working_directory'] = os.path.expanduser(FreeCAD.Qt.translate("Form", '~/Desktop'))
         w.target.setText(
             f"... {os.path.basename(conf['working_directory'])}")
 
@@ -321,9 +321,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table.setHorizontalHeaderLabels(labels)
@@ -387,9 +387,9 @@ class AddFCModelInfo():
                     labels.append(f'{i}\n{value}')
                 else:
                     if i == 'MetalThickness':
-                        labels.append('MT')
+                        labels.append('Metal Thickness')
                     elif i == 'Quantity':
-                        labels.append('Qty')
+                        labels.append('Quantity')
                     else:
                         labels.append(i)
             table_details.setHorizontalHeaderLabels(labels)
@@ -1261,7 +1261,7 @@ class AddFCInsert():
             user_tpl = {}
 
         # last selected:
-        res = conf.get('drawing_templates_resource', 'stdRU')
+        res = conf.get('drawing_templates_resource', 'std')
         w.resources.setCurrentText(res)
 
         w.switchTD.setChecked(conf.get('insert_switch', True))
@@ -1273,7 +1273,7 @@ class AddFCInsert():
 
         def fill(target) -> None:
             model.clear()
-            if target == 'stdRU':
+            if target == 'std':
                 for i in std_tpl.keys():
                     model.appendRow(QtGui.QStandardItem(i.rstrip('.svg')))
             else:
@@ -1292,7 +1292,7 @@ class AddFCInsert():
                 w.close()
                 p = ad.addObject('TechDraw::DrawPage', 'Page')
                 t = ad.addObject('TechDraw::DrawSVGTemplate', 'Template')
-                if resource == 'stdRU':
+                if resource == 'std':
                     t.Template = std_tpl[item + '.svg']
                 else:
                     t.Template = user_tpl[item + '.svg']
