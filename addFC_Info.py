@@ -139,7 +139,7 @@ def compilation(strict: bool = True,
         'User parameter:BaseApp/Preferences/Units').GetInt('Decimals')
 
     index_pt = 'App::PropertyString'  # important, type: string
-    index_exception = ('Add_Section', 'Документация')
+    index_exception = ('Add_Section', FreeCAD.Qt.translate("addFC", 'Documentation'))
 
     group = 'Add_'
 
@@ -521,9 +521,9 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
         if merger == 'Section':  # USDD
             if 'Section' in unit:
                 if unit['Section'] == '-':
-                    unit['Section'] = 'Прочие изделия'
+                    unit['Section'] = FreeCAD.Qt.translate("addFC", 'Other products')
             else:
-                unit['Section'] = 'Прочие изделия'
+                unit['Section'] = FreeCAD.Qt.translate("addFC", 'Other products')
 
         for j in skip:
             if j in unit:
@@ -556,7 +556,7 @@ def organize(merger: str, sort: str, skip: list, bom: dict) -> dict:
 def export(path: str, target: str, bom) -> str:
 
     if len(bom[0]) == 0:
-        return 'The BOM is empty...'
+        return FreeCAD.Qt.translate("addFC", 'The BOM is empty...')
 
     conf, properties = P.pref_configuration, P.pref_properties
 
@@ -592,6 +592,16 @@ def export(path: str, target: str, bom) -> str:
                         continue
                     if j in properties:
                         alias = properties[j][3]
+                        if use_alias and alias != '':
+                            if properties[j][0] == 'Type':
+                                key = FreeCAD.Qt.translate('Section', properties[j][3])
+                            else:
+                                key = FreeCAD.Qt.translate('Form', properties[j][3])
+                        else:
+                            if properties[j][0] == 'Type':
+                                key = FreeCAD.Qt.translate('Section', properties[j][0])
+                            else:
+                                key = FreeCAD.Qt.translate('Form', properties[j][0])
                         if use_alias and alias != '':
                             key = properties[j][3]
                     if key not in headers:
@@ -645,12 +655,15 @@ def export(path: str, target: str, bom) -> str:
                             weight_column = alphabet[x]
                         # aliases or abbreviations:
                         if spreadsheet_use_alias and properties[i][3] != '':
-                            i = properties[i][3]
+                            if properties[i][0] == 'Type':
+                                i = FreeCAD.Qt.translate('Section', properties[i][3])
+                            else:
+                                i = FreeCAD.Qt.translate('Form', properties[i][3])
                         else:
                             if i == 'MetalThickness':
-                                i = 'MT'
+                                i = 'Metal Thickness'
                             elif i == 'Quantity':
-                                i = 'Qty'
+                                i = 'Quantity'
                     s.set(f'{alphabet[x]}{1}', i)
                     columns_width[alphabet[x]] = [0, True]  # width, empty
 
@@ -732,9 +745,9 @@ def export(path: str, target: str, bom) -> str:
                     if 'Section' in j:
                         section = j['Section']
                         if section == '-':
-                            section = 'Прочие изделия'
+                            section = FreeCAD.Qt.translate("addFC",'Other products')
                     else:
-                        section = 'Прочие изделия'
+                        section = FreeCAD.Qt.translate("addFC",'Other products')
 
                     for k in j:
                         if k in r:
@@ -797,7 +810,7 @@ def export(path: str, target: str, bom) -> str:
 
                 # do you need more pages?
                 if count > limit[0] + limit[1] * 2:
-                    e = 'The allowed number of elements has been exceeded!'
+                    e = FreeCAD.Qt.translate("addFC", 'The allowed number of elements has been exceeded!')
                     Logger.error(e)
 
                 if count > limit[0] + limit[1]:
@@ -964,4 +977,4 @@ def export(path: str, target: str, bom) -> str:
 
             ad.recompute()
 
-    return 'Export complete'
+    return FreeCAD.Qt.translate("addFC", 'Export complete')
