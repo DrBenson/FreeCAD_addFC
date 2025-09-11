@@ -136,7 +136,7 @@
          <item>
           <widget class="QLabel" name="info">
            <property name="styleSheet">
-            <string notr="true">color: #666</string>
+            <string>color: #666</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -206,7 +206,7 @@
            <item>
             <widget class="QPushButton" name="pushButtonUnfold">
              <property name="styleSheet">
-              <string notr="true">color: #000096</string>
+              <string>color: #000096</string>
              </property>
              <property name="text">
               <string>Unfold all</string>
@@ -232,7 +232,7 @@
            <item>
             <widget class="QLabel" name="labelUnfoldValue">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>Unfold value</string>
@@ -256,7 +256,7 @@
            <item>
             <widget class="QLabel" name="labelExport">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>Unfold as</string>
@@ -290,7 +290,7 @@
            <item>
             <widget class="QLabel" name="labelAlignment">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>Sketch placement</string>
@@ -314,7 +314,7 @@
            <item>
             <widget class="QLabel" name="labelName">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>File name</string>
@@ -327,7 +327,7 @@
            <item>
             <widget class="QLabel" name="labelSignature">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>File signature</string>
@@ -340,7 +340,7 @@
            <item>
             <widget class="QLabel" name="labelPrefix">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>Unfold prefix</string>
@@ -396,7 +396,7 @@
          <item>
           <widget class="QLabel" name="status">
            <property name="styleSheet">
-            <string notr="true">color: #666</string>
+            <string>color: #666</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -473,7 +473,7 @@
            <item>
             <widget class="QPushButton" name="pushButton3DExport">
              <property name="styleSheet">
-              <string notr="true">color: #000096</string>
+              <string>color: #000096</string>
              </property>
              <property name="text">
               <string>Export all</string>
@@ -499,7 +499,7 @@
            <item>
             <widget class="QLabel" name="labelExportValue">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>Export value</string>
@@ -539,7 +539,7 @@
            <item>
             <widget class="QLabel" name="labelExportType">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>All objects of type</string>
@@ -552,7 +552,7 @@
            <item>
             <widget class="QLabel" name="labelExportFormat">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>in export format</string>
@@ -581,7 +581,7 @@
            <item>
             <widget class="QLabel" name="labelExportName">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>File name</string>
@@ -594,7 +594,7 @@
            <item>
             <widget class="QLabel" name="labelExportPrefix">
              <property name="styleSheet">
-              <string notr="true">color: #666</string>
+              <string>color: #666</string>
              </property>
              <property name="text">
               <string>Export prefix</string>
@@ -688,7 +688,7 @@ settings</string>
          <item>
           <widget class="QLabel" name="statusExport">
            <property name="styleSheet">
-            <string notr="true">color: #666</string>
+            <string>color: #666</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -726,7 +726,7 @@ settings</string>
      <item>
       <widget class="QLabel" name="error">
        <property name="styleSheet">
-        <string notr="true">color: #aa0000</string>
+        <string>color: #aa0000</string>
        </property>
        <property name="text">
         <string/>

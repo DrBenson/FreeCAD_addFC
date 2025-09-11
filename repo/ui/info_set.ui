@@ -10,7 +10,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxExport">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Exported properties</string>
@@ -27,7 +27,7 @@
      <item>
       <widget class="QGroupBox" name="groupBoxAliases">
        <property name="styleSheet">
-        <string notr="true">QGroupBox:title {color: #666}</string>
+        <string>QGroupBox:title {color: #666}</string>
        </property>
        <property name="title">
         <string>Use aliases</string>
@@ -60,7 +60,7 @@
      <item>
       <widget class="QGroupBox" name="groupBoxOrder">
        <property name="styleSheet">
-        <string notr="true">QGroupBox:title {color: #666}</string>
+        <string>QGroupBox:title {color: #666}</string>
        </property>
        <property name="title">
         <string>Order of elements</string>
@@ -93,7 +93,7 @@
         <item>
          <widget class="QLabel" name="note">
           <property name="styleSheet">
-           <string notr="true">color: #666</string>
+           <string>color: #666</string>
           </property>
           <property name="text">
            <string>Spreadsheets only</string>

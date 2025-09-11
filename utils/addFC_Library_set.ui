@@ -27,7 +27,7 @@
    <item>
     <widget class="QGroupBox" name="display">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Preferences</string>
@@ -66,7 +66,7 @@
    <item>
     <widget class="QGroupBox" name="info">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>The structure of the current library</string>
@@ -75,7 +75,7 @@
       <item>
        <widget class="QLabel" name="name">
         <property name="styleSheet">
-         <string notr="true">color: #000096;</string>
+         <string>color: #000096;</string>
         </property>
         <property name="text">
          <string>Name</string>
@@ -109,7 +109,7 @@
    <item>
     <widget class="QGroupBox" name="standard">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>addFC standard library</string>
@@ -151,7 +151,7 @@
       <bool>true</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #960000;</string>
+      <string>color: #960000;</string>
      </property>
      <property name="text">
       <string/>

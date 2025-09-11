@@ -18,7 +18,7 @@
    <item>
     <widget class="QGroupBox" name="Object_Group">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Objects </string>
@@ -41,7 +41,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="InternalName_L">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>Internal name</string>
@@ -51,7 +51,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="ObjectLabel_L">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>Object label</string>
@@ -61,7 +61,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="addFCName_L">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>addFC name</string>
@@ -117,7 +117,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="Units_Label">
              <property name="styleSheet">
-              <string notr="true">margin-right: 8px</string>
+              <string>margin-right: 8px</string>
              </property>
              <property name="text">
               <string>Units</string>
@@ -127,7 +127,7 @@
            <item row="2" column="1">
             <widget class="QLabel" name="Z_Label">
              <property name="styleSheet">
-              <string notr="true">margin: 0 4px; color: #202080</string>
+              <string>margin: 0 4px; color: #202080</string>
              </property>
              <property name="text">
               <string>Z - Height</string>
@@ -137,7 +137,7 @@
            <item row="1" column="1">
             <widget class="QLabel" name="Y_Label">
              <property name="styleSheet">
-              <string notr="true">margin: 0 4px; color: #208020</string>
+              <string>margin: 0 4px; color: #208020</string>
              </property>
              <property name="text">
               <string>Y - Width</string>
@@ -147,7 +147,7 @@
            <item row="0" column="1">
             <widget class="QLabel" name="X_Label">
              <property name="styleSheet">
-              <string notr="true">margin: 0 4px; color: #802020</string>
+              <string>margin: 0 4px; color: #802020</string>
              </property>
              <property name="text">
               <string>X - Length</string>
@@ -224,7 +224,7 @@
            <item row="1" column="0">
             <widget class="QLabel" name="Weight_Label">
              <property name="styleSheet">
-              <string notr="true">margin-right: 8px</string>
+              <string>margin-right: 8px</string>
              </property>
              <property name="text">
               <string>Weight</string>
@@ -250,7 +250,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="Volume_Label">
              <property name="styleSheet">
-              <string notr="true">margin-right: 8px</string>
+              <string>margin-right: 8px</string>
              </property>
              <property name="text">
               <string>Volume</string>
@@ -351,7 +351,7 @@
    <item>
     <widget class="QGroupBox" name="Subobjects_Group">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Subobjects </string>
@@ -390,7 +390,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="RD_Label">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>Radius &amp; Diameter</string>
@@ -448,7 +448,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="Diagonal_Label">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>Diagonal</string>
@@ -461,7 +461,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="Perimeter_Label">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>Perimeter</string>
@@ -474,7 +474,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="Area_Label">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>Area</string>
@@ -487,7 +487,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="Length_Label">
           <property name="styleSheet">
-           <string notr="true">margin-right: 8px</string>
+           <string>margin-right: 8px</string>
           </property>
           <property name="text">
            <string>Length</string>

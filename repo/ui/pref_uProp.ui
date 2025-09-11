@@ -26,7 +26,7 @@
      <item>
       <widget class="QLabel" name="labelGroup">
        <property name="styleSheet">
-        <string notr="true">color: #000096</string>
+        <string>color: #000096</string>
        </property>
        <property name="text">
         <string>Name of the property group: «Add»</string>
@@ -105,7 +105,7 @@
    <item>
     <widget class="QLabel" name="note">
      <property name="styleSheet">
-      <string notr="true">color: #666</string>
+      <string>color: #666</string>
      </property>
      <property name="text">
       <string>Available types: Bool, Enumeration, Float, Integer, String</string>

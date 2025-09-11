@@ -125,7 +125,7 @@
         <item>
          <widget class="QLabel" name="target">
           <property name="styleSheet">
-           <string notr="true">color: #000096</string>
+           <string>color: #000096</string>
           </property>
           <property name="text">
            <string>...</string>
@@ -428,7 +428,7 @@
               <item row="3" column="0">
                <widget class="QLabel" name="animationStatus">
                 <property name="styleSheet">
-                 <string notr="true">color: #005500</string>
+                 <string>color: #005500</string>
                 </property>
                 <property name="text">
                  <string>...</string>
@@ -529,7 +529,7 @@
         <item>
          <widget class="QLabel" name="error">
           <property name="styleSheet">
-           <string notr="true">color: #aa0000</string>
+           <string>color: #aa0000</string>
           </property>
           <property name="text">
            <string/>

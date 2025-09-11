@@ -54,7 +54,7 @@
    <item>
     <widget class="QLabel" name="note">
      <property name="styleSheet">
-      <string notr="true">color: #666</string>
+      <string>color: #666</string>
      </property>
      <property name="text">
       <string>For changes to take effect, you must restart FreeCAD</string>

@@ -36,7 +36,7 @@
    <item>
     <widget class="QGroupBox" name="groupLibrary">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Library, directories and files </string>
@@ -81,7 +81,7 @@
    <item>
     <widget class="QGroupBox" name="groupObjects">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Objects and configurations </string>
@@ -123,7 +123,7 @@
       <item>
        <widget class="QListView" name="objects">
         <property name="styleSheet">
-         <string notr="true">QToolTip {background-color: white; padding: 1px;}</string>
+         <string>QToolTip {background-color: white; padding: 1px;}</string>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
@@ -163,7 +163,7 @@
    <item>
     <widget class="QGroupBox" name="groupControl">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Control </string>

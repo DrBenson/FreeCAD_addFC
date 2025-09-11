@@ -52,7 +52,7 @@
         <item>
          <widget class="QGroupBox" name="groupBoxLD">
           <property name="styleSheet">
-           <string notr="true">QGroupBox:title {color: #666}</string>
+           <string>QGroupBox:title {color: #666}</string>
           </property>
           <property name="title">
            <string>Linear deflection</string>
@@ -89,7 +89,7 @@
         <item>
          <widget class="QGroupBox" name="groupBoxAD">
           <property name="styleSheet">
-           <string notr="true">QGroupBox:title {color: #666}</string>
+           <string>QGroupBox:title {color: #666}</string>
           </property>
           <property name="title">
            <string>Angular deflection</string>
@@ -152,7 +152,7 @@
         <item>
          <widget class="QGroupBox" name="groupBoxMEL">
           <property name="styleSheet">
-           <string notr="true">QGroupBox:title {color: #666}</string>
+           <string>QGroupBox:title {color: #666}</string>
           </property>
           <property name="title">
            <string>Maximum edge lenght</string>

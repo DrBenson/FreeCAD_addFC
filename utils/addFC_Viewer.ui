@@ -62,7 +62,7 @@
    <item>
     <widget class="QLabel" name="error">
      <property name="styleSheet">
-      <string notr="true">color: #aa0000</string>
+      <string>color: #aa0000</string>
      </property>
      <property name="text">
       <string/>

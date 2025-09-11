@@ -10,7 +10,7 @@
    <item>
     <widget class="QGroupBox" name="resolution">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Resolution</string>
@@ -70,7 +70,7 @@
    <item>
     <widget class="QGroupBox" name="image">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Image</string>
@@ -123,7 +123,7 @@
    <item>
     <widget class="QGroupBox" name="video">
      <property name="styleSheet">
-      <string notr="true">QGroupBox:title {color: #666}</string>
+      <string>QGroupBox:title {color: #666}</string>
      </property>
      <property name="title">
       <string>Video</string>

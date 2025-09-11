@@ -39,7 +39,7 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: #b4c0c8</string>
+        <string>color: #b4c0c8</string>
        </property>
        <property name="text">
         <string>#b4c0c8</string>
